@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Order | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow-md sticky top-3 z-30">
+    <div class="flex justify-between items-center px-10 md:px-4 py-2 max-w-8xl mx-auto">
+      <div class="flex items-center space-x-5 cursor-pointer">
+        <img src="logo.png" alt="Kisan Vaahan Logo" 
+             class="h-24 w-24 object-contain transform hover:rotate-12 transition-transform duration-400" />
+        <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+          KISAN VAAHAN
+        </h1>
+      </div>
+
+      <button onclick="window.history.back()"
+        class="bg-kisan-green text-white px-6 py-2 rounded-lg font-semibold hover:bg-kisan-dark transition">
+        ← Back
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="flex-1 flex">
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-kisan-light border-r border-gray-200 p-6 flex flex-col justify-between">
+      <div>
+        <div class="mb-8 text-center">
+          <img src="image.png" class="mx-auto h-16 w-16 rounded-full border-4 border-kisan-green" alt="Admin" />
+          <h2 class="text-xl font-bold text-kisan-dark mt-2">Admin Panel</h2>
+        </div>
+
+        <nav class="space-y-10 font-semibold text-gray-700">
+          <a href="admindashboardpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Dashboard</span>
+          </a>
+          <a href="productspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Products</span>
+          </a>
+          <a href="orderspage.html" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl">
+            <span>Orders</span>
+          </a>
+          <a href="farmeruploads.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Farmer Uploads</span>
+          </a>
+          <a href="paymentpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Payments</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <section class="flex-1 p-10">
+      <div id="orderDetails" class="bg-white border border-gray-200 rounded-2xl p-10 shadow-xl max-w-5xl mx-auto">
+        <h2 class="text-4xl font-extrabold text-kisan-dark mb-6 text-center">Order Details</h2>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 class="text-2xl font-semibold text-kisan-dark mb-3">Order Information</h3>
+            <p><b>Order ID:</b> <span id="orderId"></span></p>
+            <p><b>Date:</b> <span id="orderDate"></span></p>
+            <p><b>Status:</b> <span id="orderStatus" class="font-semibold text-kisan-dark"></span></p>
+            <p><b>Total Products:</b> <span id="orderProducts"></span></p>
+            <p><b>Total Amount:</b> ₹<span id="orderTotal"></span></p>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-semibold text-kisan-dark mb-3">Farmer Information</h3>
+            <p><b>Name:</b> <span id="farmerName"></span></p>
+            <p><b>Phone:</b> <span id="farmerPhone"></span></p>
+          </div>
+        </div>
+
+        <hr class="my-6">
+
+        <div class="mb-8">
+          <h3 class="text-2xl font-semibold text-kisan-dark mb-3">Buyer Information</h3>
+          <p><b>Name:</b> <span id="buyerName"></span></p>
+          <p><b>Phone:</b> <span id="buyerPhone"></span></p>
+          <p><b>Address:</b> <span id="buyerAddress"></span></p>
+        </div>
+
+        <hr class="my-6">
+
+        <div>
+          <h3 class="text-2xl font-semibold text-kisan-dark mb-3">Ordered Products</h3>
+          <ul id="orderItems" class="space-y-4 text-lg text-gray-800"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-kisan-dark text-white py-10 text-center mt-auto">
+    <p class="text-lg">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const order = JSON.parse(localStorage.getItem("selectedOrder"));
+
+    if (order) {
+      document.getElementById("orderId").textContent = order.id || "N/A";
+      document.getElementById("orderDate").textContent = order.date || "N/A";
+      document.getElementById("orderStatus").textContent = order.status || "Pending";
+      document.getElementById("orderProducts").textContent = order.products || "N/A";
+      document.getElementById("orderTotal").textContent = order.total || "N/A";
+      document.getElementById("farmerName").textContent = order.farmer || "N/A";
+      document.getElementById("farmerPhone").textContent = order.farmerPhone || "N/A";
+      document.getElementById("buyerName").textContent = order.buyer || "N/A";
+      document.getElementById("buyerPhone").textContent = order.buyerPhone || "N/A";
+      document.getElementById("buyerAddress").textContent = order.address || "N/A";
+
+      const orderItemsContainer = document.getElementById("orderItems");
+      if (order.items && order.items.length > 0) {
+        order.items.forEach(item => {
+          orderItemsContainer.innerHTML += `
+            <li class="border border-gray-200 p-4 rounded-lg flex justify-between items-center shadow-sm">
+              <div>
+                <p class="font-semibold">${item.name}</p>
+                <p class="text-gray-600 text-sm">${item.category}</p>
+              </div>
+              <div class="text-right">
+                <p><b>Qty:</b> ${item.qty} kg</p>
+                <p><b>₹</b> ${item.price}</p>
+              </div>
+            </li>`;
+        });
+      } else {
+        orderItemsContainer.innerHTML = `<p class="text-gray-500">No items found in this order.</p>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Successful | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          }
+        }
+      }
+    }
+
+    window.onload = function () {
+      // Pull total and payment info from session
+      const total = sessionStorage.getItem("orderTotal") || "0";
+      const payment = sessionStorage.getItem("orderPayment") || "Cash on Delivery";
+
+      document.getElementById("order-total").innerText = "₹" + total;
+      document.getElementById("order-payment").innerText = payment;
+
+      // Clear cart completely
+      localStorage.removeItem("cart");
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<section class="flex flex-col items-center justify-center text-center min-h-screen px-6">
+
+  <div class="bg-white shadow-lg rounded-2xl p-12 max-w-lg w-full">
+
+    <div class="text-kisan-green text-7xl mb-4">✅</div>
+
+    <h1 class="text-4xl font-extrabold text-kisan-dark">Order Placed Successfully!</h1>
+
+    <p class="text-lg text-gray-600 mt-3">
+      Thank you for supporting Indian Farmers directly. Your fresh produce will arrive soon! 🌱
+    </p>
+
+    <div class="mt-8 bg-kisan-light p-5 rounded-lg text-left text-gray-700 text-xl font-medium space-y-2">
+      <p><strong>Total Amount:</strong> <span id="order-total"></span></p>
+      <p><strong>Payment Method:</strong> <span id="order-payment"></span></p>
+    </div>
+
+    <div class="mt-10 flex flex-col space-y-4">
+      <a href="marketplace.html" class="bg-kisan-green text-white py-3 rounded-lg font-bold hover:bg-kisan-dark transition">
+        Continue Shopping
+      </a>
+      <a href="landingpage.html" class="text-kisan-dark underline text-lg hover:text-kisan-green">
+        Go to Home
+      </a>
+    </div>
+
+  </div>
+
+</section>
+
+</body>
+</html>
+

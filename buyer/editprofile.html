@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kisan Vaahan - Profile Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Custom Tailwind configuration for colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kisan-green': '#22C55E', // A vibrant green
+                        'kisan-dark': '#047857', // A darker, rich green for contrast
+                        'kisan-light': '#D1FAE5', // A very light green/mint for backgrounds
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-30">
+        <div class="flex justify-between items-center px-6 py-3 max-w-full mx-auto">
+            
+            <div class="flex items-center space-x-2 cursor-pointer">
+                <img src="logo.jpg" alt="Kisan Vaahan Logo" class="h-10 w-10 object-contain" />
+                <h1 class="text-xl font-extrabold text-kisan-dark tracking-tight leading-none">
+                    KISAN VAAHAN
+                </h1>
+            </div>
+
+            <nav class="space-x-8 hidden sm:flex text-sm font-semibold">
+                <a href="landingpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Home</a>
+                <a href="market.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+                <a href="aboutpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">About</a>
+                <a href="contactpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Contact</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="flex min-h-[calc(100vh-theme(spacing.16))]"> 
+        <aside class="w-64 bg-white shadow-lg border-r border-gray-200 p-6 flex-shrink-0">
+            <div class="mb-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-2xl">
+                        👤
+                    </div>
+                    <div>
+                        <p class="font-semibold text-lg text-gray-800">Kisan Vaahan</p>
+                        <p class="text-sm text-gray-500">Buyer Portal</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="market.html" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-kisan-dark transition duration-200">
+                                <span class="mr-3 text-xl">🛒</span> Market place
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="Myorder.html" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-kisan-dark transition duration-200">
+                                <span class="mr-3 text-xl">📦</span> My Orders
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="profile.html" class="flex items-center p-3 rounded-lg text-kisan-dark bg-kisan-light font-medium hover:bg-kisan-green hover:text-white transition duration-200">
+                                <span class="mr-3 text-xl">👤</span> Profile
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        
+       <main class="flex-1 p-6 lg:p-10">
+      <div class="flex justify-between items-start mb-6">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Edit Profile</h2>
+          <p class="text-gray-600">Update your contact & delivery details.</p>
+        </div>
+      </div>
+
+      <form id="profileForm" class="bg-white border border-gray-200 rounded-lg p-6 shadow max-w-3xl">
+        <div class="flex gap-6 items-start">
+          <div>
+            <img id="previewImg" src="" alt="image" class="h-28 w-28 rounded-full object-cover border-4 border-kisan-light mb-3"/>
+            <label class="block text-sm font-semibold text-gray-700">Change Image</label>
+            <input id="imageInput" type="file" accept="image/*" class="mt-2" />
+          </div>
+
+          <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm font-medium text-gray-600">Contact Person</label>
+              <input id="contactPerson" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-gray-600">Company / Name</label>
+              <input id="companyName" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-gray-600">Phone</label>
+              <input id="phone" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-gray-600">Email</label>
+              <input id="email" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="text-sm font-medium text-gray-600">Current Address</label>
+              <textarea id="currentAddress" rows="2" class="w-full mt-1 p-2 border rounded-md"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="text-sm font-medium text-gray-600">Delivery Address</label>
+              <textarea id="deliveryAddress" rows="2" class="w-full mt-1 p-2 border rounded-md"></textarea>
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-gray-600">City</label>
+              <input id="city" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-gray-600">Pincode</label>
+              <input id="pincode" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="text-sm font-medium text-gray-600">State</label>
+              <input id="state" class="w-full mt-1 p-2 border rounded-md" />
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 justify-end mt-6">
+          <a href="editprofile.html" class="px-4 py-2 border rounded-md text-gray-700">Cancel</a>
+          <button type="submit" class="px-4 py-2 bg-kisan-green text-white rounded-md font-semibold">Save Changes</button>
+        </div>
+      </form>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-kisan-dark text-white py-8 text-center">
+    <p class="text-lg">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+  </footer>
+
+<script>
+  const key = 'buyerProfile';
+  const defaultProfile = {
+    name: "Krishi Buyer Co.",
+    contactPerson: "Sanjay Verma",
+    phone: "+91 98765 43210",
+    email: "sanjay.verma@krishibuyer.in",
+    currentAddress: "B-105, APMC Market, Turbhe",
+    deliveryAddress: "B-105, APMC Market, Turbhe",
+    city: "Navi Mumbai",
+    pincode: "400705",
+    state: "Maharashtra",
+    image: ""
+  };
+
+  function readProfile() {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : defaultProfile;
+  }
+
+  function populateForm() {
+    const p = readProfile();
+    document.getElementById('contactPerson').value = p.contactPerson || p.name || '';
+    document.getElementById('companyName').value = p.name || '';
+    document.getElementById('phone').value = p.phone || '';
+    document.getElementById('email').value = p.email || '';
+    document.getElementById('currentAddress').value = p.currentAddress || '';
+    document.getElementById('deliveryAddress').value = p.deliveryAddress || '';
+    document.getElementById('city').value = p.city || '';
+    document.getElementById('pincode').value = p.pincode || '';
+    document.getElementById('state').value = p.state || '';
+
+    const img = document.getElementById('previewImg');
+    if (p.image) img.src = p.image;
+    else {
+      // fallback SVG initials
+      const initials = (p.contactPerson || p.name || "User").split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><rect width='100%' height='100%' fill='#D1FAE5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='96' fill='#047857'>${initials}</text></svg>`;
+      img.src = 'data:image/svg+xml;base64,' + btoa(svg);
+    }
+  }
+
+  // handle image upload -> store base64 to local variable (not saved until submit)
+  let newImageBase64 = null;
+  document.getElementById('imageInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      newImageBase64 = evt.target.result;
+      document.getElementById('previewImg').src = newImageBase64;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // initialize
+  if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(defaultProfile));
+  populateForm();
+
+ // Save handler
+document.getElementById('profileForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const updated = {
+      name: document.getElementById('companyName').value.trim(),
+      contactPerson: document.getElementById('contactPerson').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      currentAddress: document.getElementById('currentAddress').value.trim(),
+      deliveryAddress: document.getElementById('deliveryAddress').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      pincode: document.getElementById('pincode').value.trim(),
+      state: document.getElementById('state').value.trim(),
+      image: newImageBase64 !== null ? newImageBase64 : readProfile().image || ''
+    };
+
+    // basic validation
+    if (!updated.contactPerson || !updated.phone || !updated.email) {
+      alert('Please fill at least name, phone and email.');
+      return;
+    }
+
+    localStorage.setItem(key, JSON.stringify(updated));
+
+    // redirect back to PROFILE PAGE
+    window.location.href = 'profile.html';
+});
+
+</script>
+</body>
+</html>

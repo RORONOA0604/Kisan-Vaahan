@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Product | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+          boxShadow: {
+            'card-lift': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<!-- HEADER -->
+<header class="bg-white shadow-md sticky top-3 z-30">
+  <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
+    <div class="flex items-center space-x-5 cursor-pointer">
+      <img src="logo.png" alt="Kisan Vaahan Logo"
+           class="h-28 w-28 object-contain transform hover:rotate-12 transition-transform duration-400" />
+      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+        KISAN VAAHAN
+      </h1>
+    </div>
+    <nav class="space-x-10 hidden lg:flex text-2xl font-semibold">
+      <a href="farmerdashboard.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Dashboard</a>
+      <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+      <a href="aboutpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">About</a>
+      <a href="contactpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Add Product Form -->
+<section class="max-w-4xl mx-auto bg-white p-10 mt-12 border border-gray-300 rounded-2xl shadow-card">
+  <h2 class="text-3xl font-bold text-center text-kisan-dark mb-10">Add New Product</h2>
+
+  <form id="productForm" class="space-y-8">
+    <!-- Upload Image -->
+    <div class="text-center">
+      <label class="block w-full bg-kisan-light/50 border border-kisan-green rounded-xl py-4 cursor-pointer hover:bg-kisan-light transition font-semibold">
+        <input type="file" id="productImage" accept="image/*" class="hidden">
+        Upload Image 📷
+      </label>
+      <img id="imagePreview" class="mt-4 mx-auto hidden w-52 h-40 object-cover rounded-lg shadow-md" />
+    </div>
+
+    <!-- Product Name -->
+    <div>
+      <label class="text-lg font-semibold">Product Name</label>
+      <input type="text" id="productName"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+        placeholder="Enter product name">
+    </div>
+
+    <!-- Farmer Info -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label class="text-lg font-semibold">Farmer Name</label>
+        <input type="text" id="farmerName"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter your name">
+      </div>
+      <div>
+        <label class="text-lg font-semibold">Phone Number</label>
+        <input type="text" id="farmerPhone"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter your phone number">
+      </div>
+    </div>
+
+    <!-- Category + Price -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label class="text-lg font-semibold">Category</label>
+        <select id="productCategory"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none">
+          <option>Vegetables</option>
+          <option>Fruits</option>
+          <option>Grains</option>
+          <option>Flowers</option>
+          <option>Pulses</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-lg font-semibold">Price per kg (₹)</label>
+        <input type="number" id="productPrice"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter price">
+      </div>
+    </div>
+
+    <!-- Stock Quantity -->
+    <div>
+      <label class="text-lg font-semibold">Stock Available (Kg)</label>
+      <input type="number" id="productStock"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+        placeholder="Enter quantity in Kg">
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="text-lg font-semibold">Description</label>
+      <textarea id="productDescription" rows="4"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+        placeholder="Describe your product..."></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit"
+      class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold shadow-md hover:bg-kisan-dark transition duration-300 hover:scale-[1.02]">
+      Save Product
+    </button>
+
+    <p id="saveMessage" class="text-center text-lg font-semibold mt-3 hidden"></p>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-kisan-dark text-white py-12 text-center mt-16">
+  <p class="text-lg">© 2025 Kisan Vaahan. All rights reserved.</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+let imageBase64 = "";
+
+document.getElementById("productImage").addEventListener("change", function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      imageBase64 = e.target.result;
+      const preview = document.getElementById("imagePreview");
+      preview.src = imageBase64;
+      preview.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById("productForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("productName").value.trim();
+  const farmerName = document.getElementById("farmerName").value.trim();
+  const farmerPhone = document.getElementById("farmerPhone").value.trim();
+  const category = document.getElementById("productCategory").value;
+  const price = document.getElementById("productPrice").value.trim();
+  const stock = document.getElementById("productStock").value.trim();
+  const desc = document.getElementById("productDescription").value.trim();
+
+  if (!name || !price || !stock || !farmerName || !farmerPhone) {
+    alert("⚠ Please fill all required fields!");
+    return;
+  }
+
+  const newProduct = {
+    name,
+    category,
+    price,
+    quantity: stock,
+    desc,
+    image: imageBase64 || "https://via.placeholder.com/150",
+    farmer: farmerName,
+    phone: farmerPhone
+  };
+
+  const uploads = JSON.parse(localStorage.getItem("farmerUploads")) || [];
+  uploads.push(newProduct);
+  localStorage.setItem("farmerUploads", JSON.stringify(uploads));
+
+  const msg = document.getElementById("saveMessage");
+  msg.textContent = "✅ Product Uploaded Successfully!";
+  msg.classList.remove("hidden");
+  msg.classList.add("text-kisan-green");
+
+  e.target.reset();
+  document.getElementById("imagePreview").classList.add("hidden");
+
+  // Redirect to farmer dashboard after 1s
+  setTimeout(() => {
+    window.location.href = "farmerdashboard.html";
+  }, 1000);
+});
+</script>
+
+</body>
+</html>

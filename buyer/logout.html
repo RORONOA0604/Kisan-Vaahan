@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kisan Vaahan - Buyer Log Out</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Custom Tailwind configuration for colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kisan-green': '#22C55E', // A vibrant green
+                        'kisan-dark': '#047857', // The deep primary green
+                        'kisan-light': '#D1FAE5', // A very light green/mint
+                        'kisan-gradient-top': '#10B981', // A slightly lighter green for the icon gradient top
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Style for the centered card */
+        .logout-card {
+            border: 1px solid #D1D5DB; /* Gray-300 border */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Shadow-lg */
+        }
+        
+        /* Thematic icon - large circle with a filled SVG user icon */
+        .theme-icon-container {
+            width: 120px; /* Adjust size as needed */
+            height: 120px; /* Adjust size as needed */
+            background: linear-gradient(to bottom, #10B981, #047857); /* Light green to Kisan Dark Green */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto; /* Center it and add space below */
+        }
+        .theme-icon-svg {
+            width: 70%; /* Size of the SVG relative to its container */
+            height: 70%;
+            fill: white; /* Color of the SVG icon itself */
+        }
+
+        /* Style for the Log Out button - using kisan-dark */
+        .logout-button {
+            background-color: #047857; /* kisan-dark */
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 2.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .logout-button:hover {
+            background-color: #059669; /* Slightly lighter green on hover */
+        }
+
+        /* Reusing established header navigation styles */
+        .nav-link {
+            font-weight: 600;
+            color: #4B5563; /* Gray-600 */
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #047857; /* kisan-dark */
+        }
+
+        /* Style for the login/register buttons in the header */
+        .header-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .farmer-login-btn {
+            border: 2px solid #047857; /* kisan-dark border */
+            color: #047857; /* kisan-dark text */
+        }
+        .buyer-login-btn {
+            background-color: #047857; /* kisan-dark background */
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-30">
+        <div class="flex justify-between items-center px-6 py-3 max-w-full mx-auto">
+            
+            <div class="flex items-center space-x-2 cursor-pointer">
+                <img src="logo.jpg" alt="Kisan Vaahan Logo" class="h-10 w-10 object-contain" />
+                <h1 class="text-xl font-extrabold text-kisan-dark tracking-tight leading-none">
+                    KISAN VAAHAN
+                </h1>
+            </div>
+
+            <nav class="space-x-8 hidden sm:flex text-sm">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link text-kisan-dark">Marketplace</a>
+                <a href="aboutpage.html" class="nav-link">About</a>
+                <a href="contactpage.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="space-x-4 flex items-center">
+                <a href="farmerlogin.html" class="header-btn farmer-login-btn hover:bg-kisan-light">
+                    Farmer Login
+                </a>
+                <a href="Buyerlogin.html" class="header-btn buyer-login-btn hover:bg-kisan-green">
+                    Buyer Login
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
+        <div class="bg-white rounded-lg logout-card p-10 w-full max-w-sm text-center">
+            
+            <h2 class="text-3xl font-extrabold text-kisan-dark mb-8 tracking-wide">LOG OUT</h2>
+            
+            <div class="theme-icon-container">
+                <svg class="theme-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            
+            <p class="text-lg font-semibold text-gray-700 mb-8">BUYER</p>
+            
+            <button class="logout-button">
+                LOG OUT
+            </button>
+        </div>
+    </main>
+    
+</body>
+</html>

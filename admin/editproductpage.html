@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Product | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+          boxShadow: {
+            'card': '0 4px 12px rgba(0,0,0,0.08)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<!-- HEADER -->
+<header class="bg-white shadow-md sticky top-3 z-30">
+  <div class="flex justify-between items-center px-10 py-2">
+    <div class="flex items-center space-x-5 cursor-pointer">
+      <img src="logo.png" class="h-20 object-contain" />
+      <h1 class="text-3xl font-extrabold text-kisan-dark">KISAN VAAHAN</h1>
+    </div>
+    <a href="productspage.html" class="text-kisan-green font-semibold hover:underline">← Back to Products</a>
+  </div>
+</header>
+
+<!-- MAIN SECTION -->
+<section class="max-w-4xl mx-auto bg-white p-10 mt-12 border border-gray-300 rounded-2xl shadow-card">
+
+  <h2 class="text-3xl font-bold text-center text-kisan-dark mb-10">Edit Product</h2>
+
+  <form id="editForm" class="space-y-8">
+
+    <!-- IMAGE PREVIEW + CHANGE -->
+    <div class="text-center">
+      <img id="imagePreview" class="mt-4 mx-auto w-52 h-40 object-cover rounded-lg shadow-md" />
+      <label class="block w-full bg-kisan-light/50 border border-kisan-green rounded-xl py-4 cursor-pointer hover:bg-kisan-light transition font-semibold mt-3">
+        <input type="file" id="productImage" accept="image/*" class="hidden">
+        Change Image 📷
+      </label>
+    </div>
+
+    <!-- PRODUCT NAME -->
+    <div>
+      <label class="text-lg font-semibold">Product Name</label>
+      <input type="text" id="productName"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green"
+        placeholder="Enter product name">
+    </div>
+
+    <!-- CATEGORY + PRICE -->
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div>
+        <label class="text-lg font-semibold">Category</label>
+        <select id="productCategory"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green">
+          <option>Vegetables</option>
+          <option>Fruits</option>
+          <option>Grains</option>
+          <option>Millets</option>
+          <option>Pulses</option>
+          <option>Flowers</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-lg font-semibold">Price per kg (₹)</label>
+        <input type="number" id="productPrice"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green"
+          placeholder="Enter price">
+      </div>
+
+    </div>
+
+    <!-- STOCK -->
+    <div>
+      <label class="text-lg font-semibold">Stock Available (Kg)</label>
+      <input type="number" id="productStock"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green">
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div>
+      <label class="text-lg font-semibold">Description</label>
+      <textarea id="productDescription" rows="4"
+        class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green"
+        placeholder="Describe your product..."></textarea>
+    </div>
+
+    <!-- SAVE BUTTON -->
+    <button type="submit"
+      class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold shadow-md hover:bg-kisan-dark transition hover:scale-[1.02]">
+      Update Product ✅
+    </button>
+
+    <p id="updateMessage" class="text-center text-lg font-semibold mt-3 hidden text-kisan-dark"></p>
+
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-kisan-dark text-white py-12 text-center mt-16">
+  <p class="text-lg">© 2025 Kisan Vaahan. All rights reserved.</p>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+const index = localStorage.getItem("editProductIndex");
+let products = JSON.parse(localStorage.getItem("marketProducts")) || [];
+let product = products[index];
+
+if (!product) {
+  alert("❌ Product not found!");
+  window.location.href = "productspage.html";
+}
+
+// Prefill form data
+document.getElementById("productName").value = product.name;
+document.getElementById("productCategory").value = product.category;
+document.getElementById("productPrice").value = product.price;
+document.getElementById("productStock").value = product.quantity;
+document.getElementById("productDescription").value = product.desc || "";
+document.getElementById("imagePreview").src = product.image;
+
+// Image preview on change
+let newImageBase64 = "";
+document.getElementById("productImage").addEventListener("change", function(){
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      newImageBase64 = e.target.result;
+      document.getElementById("imagePreview").src = newImageBase64;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Update Product
+document.getElementById("editForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  product.name = document.getElementById("productName").value.trim();
+  product.category = document.getElementById("productCategory").value.trim();
+  product.price = document.getElementById("productPrice").value.trim();
+  product.quantity = document.getElementById("productStock").value.trim();
+  product.desc = document.getElementById("productDescription").value.trim();
+
+  if (newImageBase64) {
+    product.image = newImageBase64; // update image only if changed
+  }
+
+  products[index] = product;
+  localStorage.setItem("marketProducts", JSON.stringify(products));
+
+  const msg = document.getElementById("updateMessage");
+  msg.textContent = "✅ Product Updated Successfully!";
+  msg.classList.remove("hidden");
+
+  setTimeout(() => {
+    window.location.href = "productspage.html";
+  }, 1200);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kisan Vaahan | Admin - Orders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow-md sticky top-0 z-30">
+    <div class="flex justify-between items-center px-6 md:px-10 py-2 max-w-8xl mx-auto">
+      <div class="flex items-center space-x-4 cursor-pointer">
+        <img src="logo.png" alt="Kisan Vaahan Logo" 
+             class="h-20 w-20 object-contain transform hover:rotate-12 transition-transform duration-400" />
+        <h1 class="text-3xl md:text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+          KISAN VAAHAN
+        </h1>
+      </div>
+
+      <nav class="hidden md:flex space-x-8 font-semibold text-xl">
+        <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN SECTION -->
+  <main class="flex-1 flex">
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-kisan-light border-r border-gray-200 p-6 flex flex-col justify-between">
+      <div>
+        <div class="mb-8 text-center">
+          <img src="image.png" class="mx-auto h-16 w-16 rounded-full border-4 border-kisan-green" alt="Admin" />
+          <h2 class="text-xl font-bold text-kisan-dark mt-2">Admin Panel</h2>
+        </div>
+
+        <nav class="space-y-10 font-semibold text-gray-700">
+          <a href="admindashboardpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Dashboard</span>
+          </a>
+          <a href="productspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Products</span>
+          </a>
+           <a href="farmeruploadspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Farmer Uploads</span>
+          </a>
+          <a href="orderspage.html" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl">
+            <span>Orders</span>
+          </a>
+          <a href="paymentpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Payments</span>
+          </a>
+        </nav>
+      </div>
+
+               <button onclick="window.location.href='landingpage.html'" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6">Log Out</button>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <section class="flex-1 p-6 md:p-10">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-kisan-dark mb-2">My Orders</h2>
+      <p class="text-gray-600 mb-6 text-base md:text-lg">Track and manage all buyer purchases</p>
+
+      <!-- FILTER BUTTONS -->
+      <div class="flex flex-wrap gap-3 mb-8">
+        <button onclick="filterOrders('All')" id="tabAll" class="px-5 py-2 rounded-full bg-kisan-green text-white font-semibold shadow">All</button>
+        <button onclick="filterOrders('Pending')" id="tabPending" class="px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-kisan-light">Pending</button>
+        <button onclick="filterOrders('Processing')" id="tabProcessing" class="px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-kisan-light">Processing</button>
+        <button onclick="filterOrders('Shipped')" id="tabShipped" class="px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-kisan-light">Shipped</button>
+        <button onclick="filterOrders('Delivered')" id="tabDelivered" class="px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-kisan-light">Delivered</button>
+      </div>
+
+      <!-- ORDERS LIST -->
+      <div id="ordersContainer" class="space-y-6"></div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-kisan-dark text-white py-8 text-center mt-auto">
+    <p class="text-lg">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const ordersContainer = document.getElementById("ordersContainer");
+    let orders = JSON.parse(localStorage.getItem("buyerOrders")) || [];
+
+    // ✅ Load orders dynamically from buyer side
+    // Example structure of each order in localStorage.buyerOrders:
+    // { id, date, products, farmer, total, status, buyer, buyerPhone, address, items: [{ name, qty, price }] }
+
+    function loadOrders(filter = "All") {
+      ordersContainer.innerHTML = "";
+
+      let filtered = filter === "All" ? orders : orders.filter(o => o.status === filter);
+
+      if (filtered.length === 0) {
+        ordersContainer.innerHTML = `<p class="text-center text-gray-500 text-lg py-10">No ${filter} orders found 🌾</p>`;
+        return;
+      }
+
+      filtered.forEach(o => {
+        ordersContainer.innerHTML += `
+          <div class="border border-gray-200 bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
+            <div class="flex flex-col md:flex-row justify-between md:items-center mb-3">
+              <div>
+                <h3 class="text-xl md:text-2xl font-bold text-kisan-dark">Order #${o.id}</h3>
+                <p class="text-gray-500 text-sm md:text-base">${o.date}</p>
+              </div>
+              <span class="mt-2 md:mt-0 px-4 py-1 rounded-full border border-kisan-dark text-kisan-dark font-semibold text-sm">${o.status}</span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 text-base md:text-lg mb-4">
+              <p><b>Products:</b> ${o.products}</p>
+              <p><b>Farmer:</b> ${o.farmer}</p>
+              <p><b>Total:</b> ₹${o.total}</p>
+              <p><b>Buyer:</b> ${o.buyer || 'N/A'}</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3">
+              <button onclick="trackOrder('${o.id}')" 
+                      class="w-full md:w-1/2 py-2 border-2 border-kisan-green text-kisan-green rounded-full font-semibold hover:bg-kisan-light transition">
+                Track Order
+              </button>
+              <button onclick="viewOrder('${o.id}')" 
+                      class="w-full md:w-1/2 py-2 bg-kisan-green text-white rounded-full font-semibold hover:bg-kisan-dark transition">
+                View Details
+              </button>
+            </div>
+          </div>`;
+      });
+    }
+
+    // ✅ Filter by status
+    function filterOrders(status) {
+      document.querySelectorAll("button[id^='tab']").forEach(btn => {
+        btn.classList.remove("bg-kisan-green", "text-white");
+        btn.classList.add("bg-gray-200", "text-gray-700");
+      });
+
+      const active = document.getElementById("tab" + status);
+      if (active) {
+        active.classList.add("bg-kisan-green", "text-white");
+      }
+
+      loadOrders(status);
+    }
+
+    // ✅ Track order (placeholder)
+    function trackOrder(orderId) {
+      alert("Tracking info for Order " + orderId + " will be displayed here.");
+    }
+
+    // ✅ View order details
+    function viewOrder(orderId) {
+      const selected = orders.find(o => o.id === orderId);
+      localStorage.setItem("selectedOrder", JSON.stringify(selected));
+      window.location.href = "vieworder.html";
+    }
+
+    // ✅ Initial load
+    loadOrders("All");
+  </script>
+
+</body>
+</html>

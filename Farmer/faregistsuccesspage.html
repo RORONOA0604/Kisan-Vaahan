@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Successful | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+   <style>
+    :root {
+      --kisan-green: #22C55E;
+      --kisan-dark: #166534;
+      --kisan-light: #DCFCE7;
+    }
+    .bg-kisan-green { background-color: var(--kisan-green); }
+    .bg-kisan-light { background-color: var(--kisan-light); }
+    .text-kisan-dark { color: var(--kisan-dark); }
+    .hover\:bg-kisan-dark:hover { background-color: var(--kisan-dark); }
+  </style>
+</head>
+<!-- 🌿 Light Background Gradient -->
+<body class="bg-gradient-to-br from-kisan-light to-white font-sans text-gray-800">
+
+<header class="bg-white shadow-md sticky top-0 z-30 py-3">
+  <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
+
+    <!-- LOGO + NAME -->
+    <div class="flex items-center space-x-5 cursor-pointer">
+      <img src="logo.png" alt="Kisan Vaahan Logo"
+           class="h-28 w-28 object-contain transform hover:rotate-6 transition duration-300" />
+
+      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition duration-300">
+        KISAN VAAHAN
+      </h1>
+    </div>
+
+  </div>
+</header>
+
+<!-- Success Box -->
+<section class="flex justify-center items-center max-h-screen mt-10 px-6">
+  <div class="bg-white w-full max-w-4xl shadow-xl rounded-xl p-12 border border-gray-200 text-center">
+
+    <h2 class="text-5xl font-extrabold text-kisan-dark tracking-wide">FARMER PORTAL</h2>
+
+    <div class="mt-10 flex justify-center">
+      <div class="flex items-center space-x-5 cursor-pointer">
+  <img src="logo.png" alt="Kisan Vaahan Logo" class="h-35 w-35 object-contain" />
+      </div>
+    </div>
+
+    <p class="mt-10 text-2xl font-semibold text-gray-700">REGISTRATION SUCCESSFUL ✅</p>
+
+    <button onclick="window.location.href='http://127.0.0.1:5500/farmerlogin.html'"
+      class="mt-8 bg-kisan-green text-white px-10 py-3 rounded-full text-2xl font-semibold hover:bg-kisan-dark transition duration-300 shadow-md hover:scale-[1.03]">
+      Continue
+    </button>
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

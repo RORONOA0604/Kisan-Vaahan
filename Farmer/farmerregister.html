@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Farmer Account | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --kisan-green: #22C55E;
+      --kisan-dark: #166534;
+      --kisan-light: #DCFCE7;
+    }
+    .bg-kisan-green { background-color: var(--kisan-green); }
+    .bg-kisan-light { background-color: var(--kisan-light); }
+    .text-kisan-dark { color: var(--kisan-dark); }
+    .hover\:bg-kisan-dark:hover { background-color: var(--kisan-dark); }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-kisan-light to-white font-sans text-gray-800">
+
+<header class="bg-white shadow-md sticky top-0 z-30 py-3">
+  <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
+
+    <!-- LOGO + NAME -->
+    <div class="flex items-center space-x-5 cursor-pointer">
+      <img src="logo.png" alt="Kisan Vaahan Logo"
+           class="h-28 w-28 object-contain transform hover:rotate-6 transition duration-300" />
+
+      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition duration-300">
+        KISAN VAAHAN
+      </h1>
+    </div>
+
+  </div>
+</header>
+
+<!-- Registration Section -->
+<section class="flex justify-center items-center min-h-screen px-6">
+  <div class="bg-white w-full max-w-md shadow-xl rounded-xl p-10 border border-gray-200">
+
+    <h2 class="text-3xl font-extrabold text-center text-kisan-dark">Create Farmer Account</h2>
+    <p class="text-center text-gray-600 mt-2">Join us and sell your fresh products directly to consumers</p>
+
+    <form class="mt-10 space-y-6">
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Full Name</label>
+        <input type="text" class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green" placeholder="Your full name">
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Phone Number</label>
+        <input type="text" class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green" placeholder="Mobile number">
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Location / Village</label>
+        <input type="text" class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green" placeholder="Your village / city">
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Password</label>
+        <input type="password" class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green" placeholder="Create password">
+      </div>
+
+      <button type="button"
+  onclick="window.location.href='faregistsuccesspage.html'"
+  class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold hover:bg-kisan-dark transition duration-300 shadow-md hover:scale-[1.02]">
+  Create Account
+</button>
+    </form>
+
+    <p class="text-center text-sm text-gray-700 mt-6">
+      Already have an account?
+      <a href="http://127.0.0.1:5500/farmerlogin.html#" class="text-kisan-dark font-semibold hover:underline">
+        Login →
+      </a>
+    </p>
+
+  </div>
+</section>
+
+</body>
+</html>

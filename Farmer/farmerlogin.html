@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Login | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --kisan-green: #22C55E;
+      --kisan-dark: #166534;
+      --kisan-light: #DCFCE7;
+    }
+    .bg-kisan-green { background-color: var(--kisan-green); }
+    .bg-kisan-light { background-color: var(--kisan-light); }
+    .text-kisan-dark { color: var(--kisan-dark); }
+    .hover\:bg-kisan-dark:hover { background-color: var(--kisan-dark); }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-kisan-light to-white font-sans text-gray-800">
+
+<header class="bg-white shadow-md sticky top-0 z-30 py-3">
+  <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
+
+    <div class="flex items-center space-x-5 cursor-pointer">
+      <img src="logo.png" alt="Kisan Vaahan Logo"
+           class="h-28 w-28 object-contain transform hover:rotate-6 transition duration-300" />
+
+      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition duration-300">
+        KISAN VAAHAN
+      </h1>
+    </div>
+
+  </div>
+</header>
+
+<section class="flex justify-center items-center min-h-screen px-6">
+  <div class="bg-white w-full max-w-md shadow-xl rounded-xl p-10 border border-gray-200">
+
+    <h2 class="text-3xl font-extrabold text-center text-kisan-dark">Farmer Login</h2>
+    <p class="text-center text-gray-600 mt-2">Bringing fields closer to families, one fair trade at a time</p>
+
+    <form class="mt-10 space-y-6" onsubmit="loginFarmer(event)">
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Your Name</label>
+        <input id="farmerNameInput" type="text"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter your name" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Phone Number</label>
+        <input type="text"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter your mobile number" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Password</label>
+        <input type="password"
+          class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
+          placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit"
+        class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold hover:bg-kisan-dark transition duration-300 shadow-md hover:scale-[1.02]">
+        Login
+      </button>
+
+      <p class="text-center text-sm text-gray-600 mt-3">
+        Forgot your password?  
+        <a href="#" class="text-kisan-dark font-semibold hover:underline">Reset here</a>
+      </p>
+
+    </form>
+
+    <hr class="my-8 border-gray-300">
+
+    <p class="text-center text-gray-700">New to Kisan Vaahan?</p>
+    <a href="farmerregister.html" class="block text-center mt-3 text-kisan-green font-bold hover:text-kisan-dark">
+      Create a Farmer Account →
+    </a>
+
+  </div>
+</section>
+
+<script>
+function loginFarmer(event) {
+  event.preventDefault();
+  let enteredName = document.getElementById("farmerNameInput").value;
+  localStorage.setItem("loggedFarmer", enteredName);
+  window.location.href = "farmerdashboard.html";
+}
+</script>
+
+</body>
+</html>
