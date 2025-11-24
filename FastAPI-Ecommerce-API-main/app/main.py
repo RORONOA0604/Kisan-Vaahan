@@ -65,9 +65,9 @@ async def landing_page(request: Request):
 async def marketplace(request: Request):
     return templates.TemplateResponse("marketplace.html", {"request": request})
 
-@app.get("/privacy", response_class=HTMLResponse, name="privcay_policy")
+@app.get("/privacy", response_class=HTMLResponse, name="privacy_policy")
 async def marketplace(request: Request):
-    return templates.TemplateResponse("privacyandpolicy.html", {"request": request})
+    return templates.TemplateResponse("privacyandpolicypage.html", {"request": request})
 
 @app.get("/terms", response_class=HTMLResponse, name="terms_and_conditions")
 async def marketplace(request: Request):

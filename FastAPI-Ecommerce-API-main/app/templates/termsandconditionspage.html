@@ -226,9 +226,9 @@
   <div class="max-w-7xl mx-auto px-6 md:px-10 py-12 text-center">
     <h4 class="font-bold text-xl mb-4">Kisan Vaahan</h4>
     <div class="space-x-6 text-sm mb-6">
-      <a href="landingpage.html" class="hover:text-kisan-green transition duration-300">Home</a>
-      <a href="aboutpage.html" class="hover:text-kisan-green transition duration-300">About Us</a>
-      <a href="contactpage.html" class="hover:text-kisan-green transition duration-300">Contact Us</a>
+      <a href="{{ url_for('landing_page') }}" class="hover:text-kisan-green transition duration-300">Home</a>
+      <a href="{{ url_for('about') }}" class="hover:text-kisan-green transition duration-300">About Us</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-kisan-green transition duration-300">Contact Us</a>
     </div>
 
     <p class="mt-4 text-lg">KisanVaahan Corporate Office, Bengaluru, Karnataka</p>
@@ -237,8 +237,8 @@
     <div class="border-t border-white/20 mt-8 pt-4">
       <p class="text-lg text-gray-300">© 2025, KisanVaahan. All rights reserved.</p>
       <div class="space-x-4 text-lg mt-1">
-        <a href="privacyandpolicypage.html" class="hover:text-kisan-green transition duration-300">Privacy Policy</a>
-        <a href="termsandconditionspage.html" class="hover:text-kisan-green transition duration-300">Terms of Service</a>
+        <a href="{{ url_for('privacy_policy') }}" class="hover:text-kisan-green transition duration-300">Privacy Policy</a>
+        <a href="{{ url_for('terms_and_conditions') }}" class="hover:text-kisan-green transition duration-300">Terms of Service</a>
       </div>
     </div>
   </div>
