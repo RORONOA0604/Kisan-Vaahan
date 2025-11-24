@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Dashboard | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+          boxShadow: {
+            'custom-3d': '0 10px 15px -3px rgba(34,197,94,0.1), 0 4px 6px -2px rgba(34,197,94,0.05)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800" style="zoom:70%;overflow-x:hidden;">
+
+<header class="bg-white shadow-md sticky top-3 z-30">
+  <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
+    <div class="flex items-center space-x-5 cursor-pointer">
+     <img src="{{ url_for('static', path='logo.png') }}" alt="Kisan Vaahan Logo" 
+       class="h-28 w-28 object-contain transform hover:rotate-12 transition-transform duration-400" />
+      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+        KISAN VAAHAN
+      </h1>
+    </div>
+     <nav class="space-x-10 hidden lg:flex text-2xl font-semibold px-2">
+      <a href="{{ url_for('landing_page') }}"  class="text-kisan-dark hover:text-kisan-green">Home</a>
+      <a href="{{ url_for('marketplace') }}"  class="text-kisan-dark hover:text-kisan-green">Marketplace</a>
+      <a href="{{ url_for('about') }}"    class="text-kisan-dark hover:text-kisan-green">About</a>
+      <a href="{{ url_for('contact') }}"  class="text-kisan-dark hover:text-kisan-green">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- DASHBOARD -->
+<section class="max-w-7xl mx-auto px-8 py-12">
+
+  <h2 id="farmerName" class="text-6xl font-bold text-kisan-dark"></h2>
+  <p class="text-gray-900 mt-1 mb-10">Manage your products and track your sales</p>
+
+  <div class="flex justify-between items-center mb-5">
+    <h3 class="text-2xl font-semibold text-gray-800">My Products</h3>
+
+    <a href="{{ url_for('farmer_add_product') }}"
+   id="farmer_add_product"
+   class="inline-block border-2 border-kisan-green text-kisan-green px-6 py-2 rounded-full font-semibold hover:bg-kisan-light text-center">
+  + Add Product
+</a>
+  </div>
+
+  <!-- PRODUCT LIST -->
+  <div id="productList" class="space-y-4"></div>
+
+  <!-- MARKET PRICE -->
+  <h3 class="text-2xl font-semibold text-gray-800 mt-14 mb-4">Today's Market Price Updates 🌾</h3>
+
+  <div class="bg-kisan-light/50 border border-gray-200 p-6 rounded-xl">
+    <ul id="market-list" class="space-y-3 text-gray-900 text-lg">
+      <li>Loading latest prices...</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center">
+  <div class="bg-white p-6 rounded-xl shadow-lg text-center w-80">
+    <h3 class="text-xl font-bold text-red-600 mb-4">Confirm Delete</h3>
+    <p class="text-gray-700 mb-6">Are you sure you want to delete this product?</p>
+
+    <div class="flex justify-center space-x-4">
+      <button onclick="deleteConfirmed()" class="px-4 py-2 bg-red-600 text-white rounded-lg">Yes</button>
+      <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded-lg">No</button>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-kisan-dark text-white py-12 text-center mt-16">
+  <p class="text-lg">© 2025 Kisan Vaahan. All rights reserved.</p>
+</footer>
+
+<script>
+// SET FARMER NAME
+document.getElementById("farmerName").innerText =
+  "Welcome, " + (localStorage.getItem("loggedFarmer") || "Farmer");
+
+// LOAD PRODUCTS FROM farmerUploads
+function loadProducts() {
+  let products = JSON.parse(localStorage.getItem("farmerUploads")) || [];
+  let container = document.getElementById("productList");
+  container.innerHTML = "";
+
+  if (products.length === 0) {
+    container.innerHTML = `<p class="text-center text-gray-600 text-lg py-10">No products added yet 🌾</p>`;
+    return;
+  }
+
+  products.forEach((p, index) => {
+    container.innerHTML += `
+      <div class="bg-white border border-gray-200 p-4 rounded-xl flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-4">
+          <img src="${p.image}" class="h-20 w-28 rounded-lg object-cover">
+
+          <div>
+            <h4 class="font-bold text-2xl">${p.name}</h4>
+            <p class="text-gray-600 text-lg">₹ ${p.price}/kg • ${p.quantity} kg • ${p.category}</p>
+            <p class="text-gray-700 text-sm">${p.desc}</p>
+          </div>
+        </div>
+
+        <div class="space-x-3">
+          <button onclick="editProduct(${index})"
+            class="px-4 py-1 border border-gray-400 rounded-md hover:bg-gray-100">Edit</button>
+
+          <button onclick="openDeleteModal(${index})"
+            class="px-4 py-1 border border-red-500 text-red-500 rounded-md hover:bg-red-50">Delete</button>
+        </div>
+      </div>`;
+  });
+}
+
+loadProducts();
+
+// EDIT PRODUCT
+function editProduct(index) {
+  localStorage.setItem("editProductIndex", index);
+  window.location.href = "{{ url_for('farmer_edit_product') }}";
+}
+
+// DELETE PRODUCT
+let deleteIndex = null;
+
+function openDeleteModal(index) {
+  deleteIndex = index;
+  document.getElementById("deleteModal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("deleteModal").classList.add("hidden");
+}
+
+function deleteConfirmed() {
+  let products = JSON.parse(localStorage.getItem("farmerUploads")) || [];
+  products.splice(deleteIndex, 1);
+  localStorage.setItem("farmerUploads", JSON.stringify(products));
+  loadProducts();
+  closeModal();
+}
+
+// MARKET PRICE
+async function loadMarketPrices() {
+  const apiUrl =
+    "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001f09d9e6d52db22a8761eaa5f7ed2f3ce&format=json&limit=10";
+
+  let response = await fetch(apiUrl);
+  let data = await response.json();
+
+  let container = document.getElementById("market-list");
+  container.innerHTML = "";
+
+  let watchList = ["Tomato", "Onion", "Potato", "Green Chilli", "Carrot"];
+
+  data.records.forEach(item => {
+    if (watchList.includes(item.commodity)) {
+      container.innerHTML += `<li>🌾 <b>${item.commodity}</b>: ₹${item.modal_price}/kg</li>`;
+    }
+  });
+}
+
+loadMarketPrices();
+</script>
+
+</body>
+</html>

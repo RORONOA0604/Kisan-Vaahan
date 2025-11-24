@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kisan Vaahan | Admin Dashboard</title>
+
+  <!-- Tailwind CSS + Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E', // A vibrant green
+            'kisan-dark': '#047857', // A darker, rich green for contrast
+            'kisan-light': '#D1FAE5', // A very light green/mint for backgrounds
+          },
+          boxShadow: {
+            'custom-3d': '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
+            'card-lift': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800" style="zoom: 70%; overflow-x: hidden;">
+
+  <header class="bg-white shadow-md sticky top-0 z-30">
+    <div class="flex justify-between items-center px-10 md:px-4 py-2 max-w-8xl mx-auto">
+      <div class="flex items-center space-x-5 cursor-pointer">
+        <img src="logo.png"
+             alt="Kisan Vaahan Logo"
+             class="h-24 w-24 object-contain transform hover:rotate-12 transition-transform duration-400" />
+        <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+          KISAN VAAHAN
+        </h1>
+      </div>
+
+      <nav class="space-x-8 font-semibold text-2xl">
+        <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+      </nav>
+    </div>
+  </header>
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-kisan-light border-r border-gray-200 p-6 flex flex-col justify-between">
+    <div>
+      <div class="mb-8 text-center">
+        <img src="image.png" class="mx-auto h-16 w-16 rounded-full border-4 border-kisan-green" alt="">
+        <h2 class="text-xl font-bold text-kisan-dark mt-2">Admin Panel</h2>
+      </div>
+
+      <nav class="space-y-10 font-semibold text-gray-700">
+        <a href="admindashboardpage.html" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl"><span>Dashboard</span></a>
+        <a href="productspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Products</span></a>
+        <a href="farmeruploadspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Farmer Uploads</span></a>
+        <a href="orderspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Orders</span></a>
+        <a href="paymentpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Payments</span></a>
+      </nav>
+    </div>
+
+    <button onclick="window.location.href='landingpage.html'" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6">Log Out</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-10 space-y-10">
+
+    <!-- DASHBOARD STATS -->
+    <section id="stats" class="grid md:grid-cols-4 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-gray-500 text-sm">Total Farmers</h3>
+        <p id="totalFarmers" class="text-3xl font-bold text-kisan-dark mt-2">–</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-gray-500 text-sm">Active Products</h3>
+        <p id="activeProducts" class="text-3xl font-bold text-kisan-dark mt-2">–</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-gray-500 text-sm">Total Orders</h3>
+        <p id="totalOrders" class="text-3xl font-bold text-kisan-dark mt-2">–</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-gray-500 text-sm">Total Revenue</h3>
+        <p id="totalRevenue" class="text-3xl font-bold text-kisan-dark mt-2">–</p>
+      </div>
+    </section>
+
+    <!-- CHARTS -->
+    <section class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="text-xl font-bold text-kisan-dark mb-4">Monthly Revenue</h2>
+        <canvas id="salesChart"></canvas>
+      </div>
+      <div class="bg-white p-10 rounded-xl shadow">
+        <h2 class="text-xl font-bold text-kisan-dark mb-2">Category Breakdown</h2>
+        <canvas id="categoryChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ORDERS TABLE -->
+    <section class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-2xl font-bold text-kisan-dark mb-4">Recent Orders</h2>
+      <table class="min-w-full text-left border" id="ordersTable">
+        <thead class="bg-kisan-light text-kisan-dark font-semibold">
+          <tr>
+            <th class="py-3 px-4">Order ID</th>
+            <th class="py-3 px-4">Farmer</th>
+            <th class="py-3 px-4">Product</th>
+            <th class="py-3 px-4">Amount (₹)</th>
+            <th class="py-3 px-4">Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-kisan-dark text-white text-center py-8 mt-auto">
+  <p class="font-semibold">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+/* Mock Farmer Data (Replace with API later) */
+const farmers = [
+  {name:"Rajesh Kumar",products:3,earnings:12000,orders:[{id:"K101",product:"Tomatoes",amount:450,status:"Delivered"}]},
+  {name:"Anusha Patil",products:5,earnings:25000,orders:[{id:"K102",product:"Ragi",amount:900,status:"Pending"}]},
+  {name:"Suresh Reddy",products:2,earnings:8000,orders:[{id:"K103",product:"Carrots",amount:150,status:"Delivered"}]},
+  {name:"Manjappa",products:4,earnings:18000,orders:[{id:"K104",product:"Capsicum",amount:200,status:"Delivered"}]}
+];
+
+/* Compute Stats */
+const totalFarmers=farmers.length;
+const activeProducts=farmers.reduce((a,f)=>a+f.products,0);
+const totalOrders=farmers.reduce((a,f)=>a+f.orders.length,0);
+const totalRevenue=farmers.reduce((a,f)=>a+f.earnings,0);
+
+/* Update DOM */
+document.getElementById("totalFarmers").textContent=totalFarmers;
+document.getElementById("activeProducts").textContent=activeProducts;
+document.getElementById("totalOrders").textContent=totalOrders;
+document.getElementById("totalRevenue").textContent="₹"+totalRevenue.toLocaleString();
+
+/* Orders Table */
+const ordersTable=document.querySelector("#ordersTable tbody");
+farmers.forEach(f=>f.orders.forEach(o=>{
+  const row=`<tr class="border-t hover:bg-kisan-light/30 transition">
+    <td class="py-2 px-4">${o.id}</td>
+    <td class="py-2 px-4">${f.name}</td>
+    <td class="py-2 px-4">${o.product}</td>
+    <td class="py-2 px-4">${o.amount}</td>
+    <td class="py-2 px-4 font-semibold ${o.status==='Delivered'?'text-green-600':'text-yellow-600'}">${o.status}</td>
+  </tr>`;
+  ordersTable.insertAdjacentHTML("beforeend",row);
+}));
+
+/* Chart.js */
+// Revenue Line Chart
+new Chart(document.getElementById("salesChart"),{
+  type:"line",
+  data:{
+    labels:["Jan","Feb","Mar","Apr","May","Jun"],
+    datasets:[{label:"Revenue (₹)",data:[8,12,18,15,22,25],
+      borderColor:"#22C55E",backgroundColor:"rgba(34,197,94,0.15)",fill:true,tension:0.3}]
+  },
+  options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+});
+
+// Category Doughnut Chart
+new Chart(document.getElementById("categoryChart"),{
+  type:"doughnut",
+  data:{
+    labels:["Vegetables","Fruits","Millets","Flowers"],
+    datasets:[{data:[60,20,15,5],
+      backgroundColor:["#22C55E","#16A34A","#86EFAC","#BBF7D0"]}]
+  },
+  options:{plugins:{legend:{position:"bottom"}}}
+});
+</script>
+</body>
+</html>

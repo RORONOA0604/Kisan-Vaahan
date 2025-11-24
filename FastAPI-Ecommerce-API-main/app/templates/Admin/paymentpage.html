@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kisan Vaahan | Admin - Products</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+          boxShadow: {
+            'custom-3d': '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
+            'card-lift': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800" >
+
+  <!-- HEADER -->
+   <header class="bg-white shadow-md sticky top-0 z-30" style="zoom: 70%; overflow-x: hidden;">
+    <div class="flex justify-between items-center px-10 md:px-4 py-2 max-w-8xl mx-auto">
+      <div class="flex items-center space-x-5 cursor-pointer">
+        <img src="logo.png"
+             alt="Kisan Vaahan Logo"
+             class="h-24 w-24 object-contain transform hover:rotate-12 transition-transform duration-400" />
+        <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+          KISAN VAAHAN
+        </h1>
+      </div>
+
+      <nav class="space-x-8 font-semibold text-2xl">
+        <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <div class="flex min-h-screen" >
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-kisan-light border-r border-gray-200 p-6 flex flex-col justify-between " style="zoom: 70%; overflow-x: hidden;">
+      <div>
+        <div class="mb-8 text-center">
+          <img src="image.png" class="mx-auto h-16 w-16 rounded-full border-4 border-kisan-green" alt="Admin" />
+          <h2 class="text-xl font-bold text-kisan-dark mt-2">Admin Panel</h2>
+        </div>
+
+        <nav class="space-y-10 font-semibold text-gray-700">
+          <a href="admindashboardpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Dashboard</span>
+          </a>
+          <a href="productspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Products</span>
+          </a>
+          <a href="farmeruploadspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Farmer Uploads</span>
+          </a>
+          <a href="orderspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+            <span>Orders</span>
+          </a>
+          <a href="paymentpage.html" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl">
+            <span>Payments</span>
+          </a>
+        </nav>
+      </div>
+
+          <button onclick="window.location.href='landingpage.html'" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6">Log Out</button>
+
+    </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-10" style="zoom: 70%; overflow-x: hidden;">
+
+    <h2 class="text-4xl font-extrabold text-kisan-dark mb-2">Payments</h2>
+    <p class="text-gray-600 text-lg mb-6">Track all transactions and payouts</p>
+
+    <!-- SUMMARY + SEARCH -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+      <div class="bg-white p-6 rounded-xl shadow border">
+        <h3 class="text-2xl font-bold">Payments</h3>
+        <p class="text-3xl font-extrabold mt-2">$12,450</p>
+        <p class="text-lg mt-2 text-gray-600">Total Payments</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow border flex flex-col gap-3">
+        <input id="searchInput" 
+               placeholder="Search payments..." 
+               class="border rounded-lg p-3 focus:ring-2 focus:ring-kisan-green outline-none">
+        <button onclick="searchPayments()" 
+                class="py-2 rounded-full bg-gray-200 hover:bg-kisan-green hover:text-white transition font-semibold">
+          Search
+        </button>
+      </div>
+    </div>
+
+    <!-- TRANSACTION HISTORY -->
+    <h3 class="text-2xl font-bold mb-4">Transaction History</h3>
+
+    <div class="bg-white border rounded-xl shadow overflow-x-auto">
+      <table class="min-w-full text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-4 border">Date</th>
+            <th class="p-4 border">Amount</th>
+            <th class="p-4 border">Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="paymentTable">
+          <tr class="border">
+            <td class="p-4 border">04/12/2023</td>
+            <td class="p-4 border">$275</td>
+            <td class="p-4 border">Completed</td>
+          </tr>
+          <tr class="border">
+            <td class="p-4 border">04/11/2023</td>
+            <td class="p-4 border">$340</td>
+            <td class="p-4 border">Pending</td>
+          </tr>
+          <tr class="border">
+            <td class="p-4 border">04/10/2023</td>
+            <td class="p-4 border">$510</td>
+            <td class="p-4 border">Failed</td>
+          </tr>
+          <tr class="border">
+            <td class="p-4 border">04/09/2023</td>
+            <td class="p-4 border">$120</td>
+            <td class="p-4 border">Delivered</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER (always at bottom) -->
+<footer class="bg-kisan-dark text-white py-8 text-center mt-auto" style="zoom: 70%; overflow-x: hidden;">
+  <p class="text-lg">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+</footer>
+
+<script>
+  function searchPayments() {
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.querySelectorAll("#paymentTable tr");
+
+    rows.forEach(row => {
+      row.style.display = row.innerText.toLowerCase().includes(q) ? "" : "none";
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Farmer Product | Kisan Vaahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow-md sticky top-3 z-30" style="zoom: 70%; overflow-x: hidden;">
+    <div class="flex justify-between items-center px-10 md:px-4 py-2 max-w-8xl mx-auto">
+      <div class="flex items-center space-x-5 cursor-pointer">
+        <img src="logo.png" alt="Kisan Vaahan Logo" 
+             class="h-24 w-24 object-contain transform hover:rotate-12 transition-transform duration-400" />
+        <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
+          KISAN VAAHAN
+        </h1>
+      </div>
+
+      <button onclick="window.history.back()"
+        class="bg-kisan-green text-white px-6 py-2 rounded-lg font-semibold hover:bg-kisan-dark transition">
+        ← Back
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 flex flex-col justify-center">
+    <section id="detailsSection" class="max-w-6xl mx-auto bg-white mt-12 mb-16 p-10 rounded-2xl shadow-xl border border-gray-200">
+      <div class="grid md:grid-cols-2 gap-10 items-start">
+
+        <!-- Product Image -->
+        <div class="flex justify-center">
+          <img id="productImage" class="w-[100%] max-w-md h-80 object-cover rounded-2xl border border-gray-300 shadow-lg">
+        </div>
+
+        <!-- Product Information -->
+        <div>
+          <h2 id="productName" class="text-4xl font-bold text-kisan-dark mb-2"></h2>
+          <p id="productCategory" class="text-lg text-gray-600 mb-4"></p>
+
+          <div class="text-lg space-y-2">
+            <p><b class="text-kisan-dark">Price:</b> ₹<span id="productPrice"></span> /kg</p>
+            <p><b class="text-kisan-dark">Available Stock:</b> <span id="productStock"></span> Kg</p>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="text-2xl font-bold text-kisan-dark mb-2">Description</h3>
+            <p id="productDesc" class="text-gray-700 leading-relaxed"></p>
+          </div>
+
+          <hr class="my-6">
+
+          <div>
+            <h3 class="text-2xl font-bold text-kisan-dark mb-2">Farmer Details</h3>
+            <p class="text-lg"><b>Name:</b> <span id="farmerName"></span></p>
+            <p class="text-lg"><b>Phone:</b> <span id="farmerPhone"></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ✅ FOOTER -->
+  <footer class="bg-kisan-dark text-white py-8 text-center mt-auto" >
+    <p class="text-lg">© 2025 Kisan Vaahan. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const product = JSON.parse(localStorage.getItem("selectedFarmerProduct"));
+    if (product) {
+      document.getElementById("productImage").src = product.image || "https://via.placeholder.com/400x300?text=No+Image";
+      document.getElementById("productName").textContent = product.name;
+      document.getElementById("productCategory").textContent = `Category: ${product.category}`;
+      document.getElementById("productPrice").textContent = product.price;
+      document.getElementById("productStock").textContent = product.quantity || product.stock || "N/A";
+      document.getElementById("productDesc").textContent = product.desc || "No description available.";
+      document.getElementById("farmerName").textContent = product.farmer || "Unknown";
+      document.getElementById("farmerPhone").textContent = product.phone || "Not provided";
+    }
+  </script>
+</body>
+</html>
