@@ -140,7 +140,46 @@ async def farmer_edit_product(request: Request):
 @app.get("/buyer/Myorder", response_class=HTMLResponse, name="buyer_orders")
 async def farmer_edit_product(request: Request):
     return templates.TemplateResponse("Myorder.html", {"request": request})
+# Admin Routes ----------------------------------------------------
+@app.get("/Admin/Login",response_class=HTMLResponse, name="admin_login")
+async def admin_login(request: Request):
+    return templates.TemplateResponse("adminloginpage.html", {"request": request})
 
+@app.get("/Admin/Dashboard",response_class=HTMLResponse, name="admin_dashboard")
+async def admin_dashboard(request: Request):
+    return templates.TemplateResponse("admindashboardpage.html", {"request": request})
+
+@app.get("/Admin/products",response_class=HTMLResponse, name="admin_products")
+async def admin_products(request: Request):
+    return templates.TemplateResponse("productspage.html", {"request": request})
+
+@app.get("/Admin/Add-product",response_class=HTMLResponse, name="admin_add_product")
+async def admin_add_product(request: Request):
+    return templates.TemplateResponse("addproductpage.html", {"request": request})
+
+@app.get("/Admin/Edit-product",response_class=HTMLResponse, name="admin_edit_product")
+async def admin_edit_product(request: Request):
+    return templates.TemplateResponse("editproductpage.html", {"request": request})
+
+@app.get("/Admin/farmer-uploads",response_class=HTMLResponse, name="admin_farm_uploads")
+async def admin_farmer_uploads(request: Request):
+    return templates.TemplateResponse("farmeruploadspage.html", {"request": request})
+
+@app.get("/Admin/Orders-page",response_class=HTMLResponse, name="admin_orders")
+async def admin_oders_page(request: Request):
+    return templates.TemplateResponse("orderspage.html", {"request": request})
+
+@app.get("/Admin/Payments",response_class=HTMLResponse, name="admin_payments")
+async def admin_payments(request: Request):
+    return templates.TemplateResponse("paymentpage.html", {"request": request})
+
+@app.get("/Admin/View-Order",response_class=HTMLResponse, name="admin_view_order")
+async def admin_view_order(request: Request):
+    return templates.TemplateResponse("vieworder.html", {"request": request})
+
+@app.get("/Admin/view-products",response_class=HTMLResponse, name="admin_view_products")
+async def admin_view_products(request: Request):
+    return templates.TemplateResponse("viewproductpage.html", {"request": request})
 # Include your routers (after mounting static & templates)
 app.include_router(products.router)
 app.include_router(categories.router)

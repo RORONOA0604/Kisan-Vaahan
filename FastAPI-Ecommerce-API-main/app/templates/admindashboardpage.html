@@ -42,7 +42,7 @@
       </div>
 
       <nav class="space-x-8 font-semibold text-2xl">
-        <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+        <a href="{{ url_for('marketplace') }}" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
       </nav>
     </div>
   </header>
@@ -57,15 +57,18 @@
       </div>
 
       <nav class="space-y-10 font-semibold text-gray-700">
-        <a href="admindashboardpage.html" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl"><span>Dashboard</span></a>
-        <a href="productspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Products</span></a>
-        <a href="farmeruploadspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Farmer Uploads</span></a>
-        <a href="orderspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Orders</span></a>
-        <a href="paymentpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Payments</span></a>
+        <a href="{{ url_for('admin_dashboard') }}" class="flex items-center space-x-2 shadow p-3 rounded-lg border-l-4 border-kisan-green text-2xl"><span>Dashboard</span></a>
+        <a href="{{ url_for('admin_products') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Products</span></a>
+        <a href="{{ url_for('admin_farm_uploads') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Farmer Uploads</span></a>
+        <a href="{{ url_for('admin_orders') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Orders</span></a>
+        <a href="{{ url_for('admin_payments') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"><span>Payments</span></a>
       </nav>
     </div>
 
-    <button onclick="window.location.href='landingpage.html'" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6">Log Out</button>
+    <a href="{{ url_for('landing_page') }}"
+   class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6 inline-block text-center">
+  Log Out
+</a>
   </aside>
 
   <!-- MAIN CONTENT -->

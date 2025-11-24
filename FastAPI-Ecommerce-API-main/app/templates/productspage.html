@@ -48,7 +48,7 @@
       </div>
 
       <nav class="space-x-8 font-semibold text-2xl">
-        <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+        <a href="{{ url_for('marketplace') }}" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
       </nav>
     </div>
   </header>
@@ -64,23 +64,26 @@
         </div>
 
          <nav class="space-y-10 font-semibold text-gray-700">
-          <a href="admindashboardpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
+          <a href="{{ url_for('admin_dashboard') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">
             <span>Dashboard</span>
           </a>
 
-          <a href="productspage.html"
+          <a href="{{ url_for('admin_products') }}"
              class="block px-4 py-3 rounded-lg shadow-sm border-l-4 border-kisan-green text-2xl font-semibold">
              Products
           </a>
 
-          <a href="farmeruploadspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"> Farmer Uploads</a>
+          <a href="{{ url_for('admin_farm_uploads') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl"> Farmer Uploads</a>
 
-          <a href="orderspage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">Orders</a>
+          <a href="{{ url_for('admin_orders') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">Orders</a>
 
-          <a href="paymentpage.html" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">Payments</a>
+          <a href="{{ url_for('admin_payments') }}" class="flex items-center space-x-2 hover:text-kisan-green text-2xl">Payments</a>
       </div>
 
-      <button onclick="window.location.href='landingpage.html'" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6">Log Out</button>
+      <a href="{{ url_for('landing_page') }}"
+   class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mt-6 inline-block text-center">
+  Log Out
+</a>
     </aside>
 
     <!-- MAIN CONTENT -->
@@ -91,10 +94,11 @@
           <p class="text-gray-600 text-lg">View, edit, and manage your marketplace products</p>
         </div>
 
-        <button onclick="window.location.href='addproductpage.html'"
-                class="bg-kisan-green text-white px-6 py-2 rounded-lg font-semibold hover:bg-kisan-dark shadow-md">
-          + Add New Product
-        </button>
+        <a href="{{ url_for('farmer_add_product') }}"
+   class="bg-kisan-green text-white px-6 py-2 rounded-lg font-semibold hover:bg-kisan-dark shadow-md inline-block">
+    + Add New Product
+</a>
+
       </div>
 
       <!-- SEARCH + SORT BAR -->
@@ -204,7 +208,7 @@
 
     function editProduct(index) {
       localStorage.setItem("editProductIndex", index);
-      window.location.href = "editproductpage.html";
+      window.location.href = "{{ url_for('admin_edit_product') }}";
     }
 
     function confirmDeleteProduct(index) {

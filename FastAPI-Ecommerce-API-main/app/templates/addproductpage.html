@@ -37,9 +37,9 @@
       </h1>
     </div>
     <nav class="space-x-10 hidden lg:flex text-2xl font-semibold">
-      <a href="admindashboardpage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Dashboard</a>
-      <a href="productspage.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Products</a>
-      <a href="marketplace.html" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
+      <a href="{{ url_for('admin_dashboard') }}" class="text-kisan-dark hover:text-kisan-green transition duration-300">Dashboard</a>
+      <a href="{{ url_for('admin_products') }}" class="text-kisan-dark hover:text-kisan-green transition duration-300">Products</a>
+      <a href="{{ url_for('marketplace') }}" class="text-kisan-dark hover:text-kisan-green transition duration-300">Marketplace</a>
     </nav>
   </div>
 </header>
@@ -195,7 +195,7 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
 
     // ✅ redirect after short delay
     setTimeout(() => {
-      window.location.href = "productspage.html";
+      window.location.href = "{{ url_for('admin_products') }}";
     }, 1200);
   } catch (err) {
     console.error("Storage error:", err);

@@ -33,7 +33,7 @@
       <img src="logo.png" class="h-20 object-contain" />
       <h1 class="text-3xl font-extrabold text-kisan-dark">KISAN VAAHAN</h1>
     </div>
-    <a href="productspage.html" class="text-kisan-green font-semibold hover:underline">← Back to Products</a>
+    <a href="{{ url_for('admin_products') }}" class="text-kisan-green font-semibold hover:underline">← Back to Products</a>
   </div>
 </header>
 
@@ -125,7 +125,7 @@ let product = products[index];
 
 if (!product) {
   alert("❌ Product not found!");
-  window.location.href = "productspage.html";
+  window.location.href = "{{ url_for('admin_products') }}";
 }
 
 // Prefill form data
@@ -172,7 +172,7 @@ document.getElementById("editForm").addEventListener("submit", (e) => {
   msg.classList.remove("hidden");
 
   setTimeout(() => {
-    window.location.href = "productspage.html";
+    window.location.href = "{{ url_for('admin_products') }}";
   }, 1200);
 });
 </script>
