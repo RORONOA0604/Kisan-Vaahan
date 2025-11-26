@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import List
 from app.schemas.carts import CartBase
-
+from typing import Optional 
 
 # Base
 class BaseConfig:
@@ -27,11 +27,15 @@ class UserBase(BaseModel):
 class Signup(BaseModel):
     full_name: str
     username: str
-    email: str
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    location: Optional[str] = None
     password: str
+    user_type: Optional[str] = "buyer"   # expected: "buyer" or "farmer"
 
-    class Config(BaseConfig):
-        pass
+    class Config:
+        from_attributes = True
 
 
 class UserOut(BaseModel):

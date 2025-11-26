@@ -50,7 +50,7 @@
       <h2 class="text-3xl font-extrabold text-center text-kisan-dark">Buyer Login</h2>
       <p class="text-center text-gray-600 mt-2">Shop fresh produce directly from trusted farmers</p>
 
-      <form class="mt-10 space-y-6">
+      <form class="mt-10 space-y-6" id="buyerLoginForm">
         <div>
           <label class="block text-sm font-semibold text-gray-700">Email Address</label>
           <input type="email"
@@ -109,6 +109,40 @@
     </div>
   </div>
 </footer>
+<script>
+document.getElementById("buyerLoginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+
+    const formData = new FormData();
+    formData.append("username", email);  // OAuth requires username
+    formData.append("password", password);
+
+    try {
+        const res = await fetch("/auth/login", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!res.ok) {
+            alert("Invalid email or password");
+            return;
+        }
+
+        const data = await res.json();
+
+        // store token
+        localStorage.setItem("access_token", data.access_token);
+
+        // redirect to marketplace
+        window.location.href = "{{ url_for('buyer_market') }}";
+
+    } catch (err) {
+        alert("Something went wrong. Try again!");
+    }
+});
+</script>
 </body>
 </html>
