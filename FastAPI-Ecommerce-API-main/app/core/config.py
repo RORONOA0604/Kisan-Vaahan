@@ -2,7 +2,11 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    # Database Config
+    # Supabase Config
+    supabase_url: str
+    supabase_key: str
+    
+    # Database Config (Supabase PostgreSQL)
     db_username: str
     db_password: str
     db_hostname: str

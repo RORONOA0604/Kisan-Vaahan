@@ -5,94 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Farmer Account | Kisan Vaahan</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'kisan-green': '#22C55E',
-            'kisan-dark': '#047857',
-            'kisan-light': '#D1FAE5',
-          },
-          boxShadow: {
-            'custom-3d': '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
-            'card-lift': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06)',
-          }
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'kisan-green': '#22C55E',
+          'kisan-dark': '#047857',
+          'kisan-light': '#D1FAE5',
         }
       }
     }
+  }
   </script>
 </head>
-
 <body class="bg-gray-50 font-sans text-gray-800" style="zoom: 70%; overflow-x: hidden;">
 
 <header class="bg-white shadow-md sticky top-0 z-30 py-3">
   <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
-
-    <!-- LOGO + NAME -->
     <div class="flex items-center space-x-5 cursor-pointer">
-      <img src="{{ url_for('static', path='logo.png') }}" alt="Kisan Vaahan Logo"
-           class="h-28 w-28 object-contain transform hover:rotate-6 transition duration-300" />
-
-      <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition duration-300">
-        KISAN VAAHAN
-      </h1>
+      <img src="{{ url_for('static', path='logo.png') }}" alt="Kisan Vaahan Logo" class="h-24 w-24" />
+      <h1 class="text-4xl font-extrabold text-kisan-dark">KISAN VAAHAN</h1>
     </div>
-
   </div>
 </header>
 
-<!-- Registration Section -->
 <section class="flex justify-center items-center min-h-screen px-6">
   <div class="bg-white w-full max-w-md shadow-xl rounded-xl p-10 border border-gray-200">
-
     <h2 class="text-3xl font-extrabold text-center text-kisan-dark">Create Farmer Account</h2>
     <p class="text-center text-gray-600 mt-2">Join us and sell your fresh products directly to consumers</p>
 
-    <form id="farmerRegisterForm" class="mt-10 space-y-6" onsubmit="handleCreateAccount(event)">
-
+    <form id="farmerRegisterForm" class="mt-10 space-y-6" autocomplete="on">
       <div>
         <label class="block text-sm font-semibold text-gray-700">Full Name</label>
-        <input id="fullName" name="fullName" type="text"
+        <input name="full_name" id="full_name" type="text"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green"
                placeholder="Your full name" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Phone Number</label>
-        <input id="phone" name="phone" type="tel"
+        <input name="phone" id="phone" type="tel"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green"
-               placeholder="Mobile number" required>
+               placeholder="+91 98765 43210" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Location / Village</label>
-        <input id="location" name="location" type="text"
+        <input name="location" id="location" type="text"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green"
                placeholder="Your village / city" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Password</label>
-        <input id="password" name="password" type="password"
+        <input name="password" id="password" type="password"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green"
                placeholder="Create password" required>
       </div>
 
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Confirm Password</label>
+        <input name="confirm_password" id="confirm_password" type="password"
+               class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green"
+               placeholder="Re-enter password" required>
+      </div>
+
+      <p id="regError" class="text-sm text-red-600 hidden"></p>
+
       <button type="submit"
-        class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold hover:bg-kisan-dark transition duration-300 shadow-md hover:scale-[1.02]">
+        class="w-full bg-kisan-green text-white py-3 rounded-lg text-lg font-bold hover:bg-kisan-dark transition">
         Create Account
       </button>
     </form>
 
     <p class="text-center text-sm text-gray-700 mt-6">
       Already have an account?
-      <a href="{{ url_for('farmer_login') }}" class="text-kisan-dark font-semibold hover:underline">
-        Login →
-      </a>
+      <a href="{{ url_for('farmer_login') }}" class="text-kisan-dark font-semibold hover:underline">Login →</a>
     </p>
-
   </div>
 </section>
 
@@ -120,33 +110,67 @@
 </footer>
 
 <script>
-  // Collects form data, stores a simple record in localStorage, then redirects to success page
-  function handleCreateAccount(e) {
-    e.preventDefault();
+document.getElementById("farmerRegisterForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const errEl = document.getElementById("regError");
+  errEl.classList.add("hidden");
+  errEl.textContent = "";
 
-    const name = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const location = document.getElementById('location').value.trim();
-    const password = document.getElementById('password').value;
+  const form = e.target;
+  const full_name = form.elements["full_name"].value.trim();
+  const phone = form.elements["phone"].value.trim();
+  const location = form.elements["location"].value.trim();
+  const password = form.elements["password"].value;
+  const confirm_password = form.elements["confirm_password"].value;
 
-    // rudimentary client-side validation
-    if (!name || !phone || !location || !password) {
-      alert('Please fill all fields.');
+  if (!full_name || !phone || !location || !password || !confirm_password) {
+    errEl.textContent = "Please fill all fields.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+
+  if (password !== confirm_password) {
+    errEl.textContent = "Passwords do not match.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+
+  const payload = {
+    full_name,
+    username: phone,   // use phone as username for farmer
+    email: null,       // optional: no email provided
+    phone,
+    address: location,
+    password,
+    user_type: "farmer"
+  };
+
+  try {
+    const res = await fetch("/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const text = await res.text();
+    let body = null;
+    try { body = JSON.parse(text); } catch(_) { body = null; }
+
+    if (!res.ok) {
+      const message = body?.detail ? JSON.stringify(body.detail) : (body?.message || text || `Signup failed: ${res.status}`);
+      errEl.textContent = message;
+      errEl.classList.remove("hidden");
       return;
     }
 
-    // store example farmer record (in real app send to backend via fetch)
-    const farmers = JSON.parse(localStorage.getItem('kisan_farmers') || '[]');
-    farmers.push({ name, phone, location, createdAt: new Date().toISOString() });
-    localStorage.setItem('kisan_farmers', JSON.stringify(farmers));
-
-    // optional: store logged-in farmer name
-    localStorage.setItem('loggedFarmer', name);
-
-    // redirect to server-side success route (must exist in FastAPI)
-    window.location.href = "{{ url_for('farmer_register_success') }}";
+    alert("Farmer account created successfully!");
+    window.location.href = "{{ url_for('farmer_login') }}";
+  } catch (err) {
+    console.error(err);
+    errEl.textContent = "Network error. Try again.";
+    errEl.classList.remove("hidden");
   }
+});
 </script>
-
 </body>
 </html>

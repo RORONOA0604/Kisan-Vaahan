@@ -3,10 +3,31 @@ from app.db.database import get_db
 from app.services.users import UserService
 from sqlalchemy.orm import Session
 from app.schemas.users import UserCreate, UserOut, UsersOut, UserOutDelete, UserUpdate
-from app.core.security import check_admin_role
+from app.core.security import check_admin_role, get_current_user
 
 
 router = APIRouter(tags=["Users"], prefix="/users")
+
+
+# Get Current User Profile (authenticated users)
+@router.get("/me", status_code=status.HTTP_200_OK, response_model=UserOut)
+def get_my_profile(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get the profile of the currently logged-in user"""
+    return UserService.get_user(db, user_id)
+
+
+# Update Current User Profile (authenticated users)
+@router.put("/me", status_code=status.HTTP_200_OK, response_model=UserOut)
+def update_my_profile(
+    updated_user: UserUpdate,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update the profile of the currently logged-in user"""
+    return UserService.update_user(db, user_id, updated_user)
 
 
 # Get All Users

@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.routers import products, categories, carts, users, auth, accounts
+from app.routers import products, categories, carts, users, auth, accounts, orders, market_prices
 
 description = """
 Welcome to the E-commerce API! 🚀
@@ -61,16 +61,14 @@ templates = Jinja2Templates(directory="app/templates")
 async def landing_page(request: Request):
     return templates.TemplateResponse("landingpage.html", {"request": request})
 
-@app.get("/marketplace", response_class=HTMLResponse, name="marketplace")
-async def marketplace(request: Request):
-    return templates.TemplateResponse("marketplace.html", {"request": request})
+
 
 @app.get("/privacy", response_class=HTMLResponse, name="privacy_policy")
-async def marketplace(request: Request):
+async def privacy_policy(request: Request):
     return templates.TemplateResponse("privacyandpolicypage.html", {"request": request})
 
 @app.get("/terms", response_class=HTMLResponse, name="terms_and_conditions")
-async def marketplace(request: Request):
+async def terms_and_conditions(request: Request):
     return templates.TemplateResponse("termsandconditionspage.html", {"request": request})
 
 @app.get("/about", response_class=HTMLResponse, name="about")
@@ -187,3 +185,5 @@ app.include_router(carts.router)
 app.include_router(users.router)
 app.include_router(accounts.router)
 app.include_router(auth.router)
+app.include_router(orders.router)
+app.include_router(market_prices.router)

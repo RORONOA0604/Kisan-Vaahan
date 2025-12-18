@@ -30,6 +30,7 @@ class User(Base):
     # Old "role" column removed — no longer needed.
 
     carts = relationship("Cart", back_populates="user")
+    orders = relationship("Order", back_populates="user")
 
 
 class Cart(Base):
@@ -86,3 +87,44 @@ class Product(Base):
     category = relationship("Category", back_populates="products")
 
     cart_items = relationship("CartItem", back_populates="product")
+    order_items = relationship("OrderItem", back_populates="product")
+    
+    # Track which farmer uploaded this product (nullable for admin products)
+    farmer_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    farmer = relationship("User", foreign_keys=[farmer_id])
+    
+    # Product approval workflow
+    approval_status = Column(Enum("pending", "approved", "rejected", name="approval_status_types"),
+                            nullable=False, server_default="approved")
+    approved_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    approver = relationship("User", foreign_keys=[approved_by])
+    approval_date = Column(TIMESTAMP(timezone=True), nullable=True)
+
+
+class Order(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True, nullable=False, unique=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    total_amount = Column(Float, nullable=False)
+    payment_method = Column(String, nullable=False)  # COD or UPI
+    delivery_address = Column(String, nullable=False)
+    status = Column(String, nullable=False, server_default="Pending")  # Pending, Confirmed, Delivered, Cancelled
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text("NOW()"), nullable=False)
+
+    user = relationship("User", back_populates="orders")
+    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+
+    id = Column(Integer, primary_key=True, nullable=False, unique=True, autoincrement=True)
+    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    price_at_purchase = Column(Float, nullable=False)  # Store price at time of purchase
+    subtotal = Column(Float, nullable=False)
+
+    order = relationship("Order", back_populates="order_items")
+    product = relationship("Product", back_populates="order_items")

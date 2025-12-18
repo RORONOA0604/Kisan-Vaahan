@@ -10,8 +10,9 @@ DATABASE_URL = f"postgresql://{settings.db_username}:{settings.db_password}@{set
 
 engine = create_engine(DATABASE_URL)
 
-# Create tables from actual models
-Base.metadata.create_all(bind=engine)
+# Tables are created via supabase_schema.sql in Supabase
+# Commenting out auto-creation to avoid conflicts with existing tables
+# Base.metadata.create_all(bind=engine)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

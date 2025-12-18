@@ -9,8 +9,12 @@ class BaseConfig:
     from_attributes = True
 
 
-class ProductBaseCart(ProductBase):
-    category: CategoryBase = Field(exclude=True)
+class ProductBaseCart(BaseModel):
+    id: int
+    title: str
+    price: int
+    discount_percentage: float
+    thumbnail: str
 
     class Config(BaseConfig):
         pass

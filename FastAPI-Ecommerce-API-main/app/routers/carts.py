@@ -10,6 +10,16 @@ from fastapi.security.http import HTTPAuthorizationCredentials
 router = APIRouter(tags=["Carts"], prefix="/carts")
 auth_scheme = HTTPBearer()
 
+@router.get("/me", status_code=status.HTTP_200_OK, response_model=CartOut)
+def get_my_cart(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Return the current logged-in user's active cart (with items).
+    Requires Authorization: Bearer <access_token>
+    """
+    return CartService.get_my_cart(db, user_id)
 
 # Get All Carts
 @router.get("/", status_code=status.HTTP_200_OK, response_model=CartsOutList)
@@ -55,3 +65,49 @@ def delete_cart(
         cart_id: int, db: Session = Depends(get_db),
         token: HTTPAuthorizationCredentials = Depends(auth_scheme)):
     return CartService.delete_cart(token, db, cart_id)
+
+# POST /carts/add-item
+@router.post("/add-item", status_code=status.HTTP_201_CREATED, response_model=CartOut)
+def add_item_to_cart(
+    payload: dict,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    payload: {"product_id": int, "quantity": int}
+    Auth required (Bearer token).
+    """
+    return CartService.add_item(
+        db=db,
+        user_id=user_id,
+        product_id=payload.get("product_id"),
+        quantity=payload.get("quantity", 1)
+    )
+
+
+# PUT /carts/items/{item_id} - Update cart item quantity
+@router.put("/items/{item_id}", status_code=status.HTTP_200_OK, response_model=CartOut)
+def update_cart_item(
+    item_id: int,
+    payload: dict,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update cart item quantity.
+    payload: {"quantity": int}
+    """
+    return CartService.update_cart_item(db, user_id, item_id, payload.get("quantity", 1))
+
+
+# DELETE /carts/items/{item_id} - Remove cart item
+@router.delete("/items/{item_id}", status_code=status.HTTP_200_OK, response_model=CartOut)
+def remove_cart_item(
+    item_id: int,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Remove a cart item.
+    """
+    return CartService.remove_cart_item(db, user_id, item_id)

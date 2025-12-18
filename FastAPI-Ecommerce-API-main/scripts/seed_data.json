@@ -1,0 +1,74 @@
+[
+    {
+        "title": "Organic Tomatoes",
+        "category": "Vegetables",
+        "price": 40,
+        "image": "https://img.freepik.com/free-photo/top-view-ripe-fresh-tomatoes-with-water-drops-black-background_141793-3432.jpg",
+        "description": "Naturally grown, juicy and full of flavor.",
+        "stock": 120
+    },
+    {
+        "title": "Green Gram",
+        "category": "Pulses",
+        "price": 140,
+        "image": "https://www.agrifarming.in/wp-content/uploads/Ultimate-Guide-to-Green-Gram-Farming-1.jpg",
+        "description": "Rich in protein and very nutritious.",
+        "stock": 60
+    },
+    {
+        "title": "Maize",
+        "category": "Grains",
+        "price": 50,
+        "image": "https://thumbs.dreamstime.com/b/corn-maize-seeds-close-up-shot-above-57602986.jpg",
+        "description": "Fresh maize perfect for flour and meals.",
+        "stock": 200
+    },
+    {
+        "title": "Organic Carrots",
+        "category": "Vegetables",
+        "price": 40,
+        "image": "https://www.tasteofhome.com/wp-content/uploads/2019/01/carrots-shutterstock_789443206.jpg",
+        "description": "Sweet, crunchy carrots rich in Vitamin A.",
+        "stock": 90
+    },
+    {
+        "title": "Ragi",
+        "category": "Millets",
+        "price": 80,
+        "image": "https://5.imimg.com/data5/SELLER/Default/2022/9/ZB/GS/FR/25008022/jiwa-organic-ragi-flour.jpg",
+        "description": "High in calcium & fiber. Ideal for healthy meals.",
+        "stock": 150
+    },
+    {
+        "title": "Guava",
+        "category": "Fruits",
+        "price": 50,
+        "image": "https://growbilliontrees.com/cdn/shop/articles/guava-tree-grow-billion-trees.jpg?v=1712390096&width=1100",
+        "description": "Fresh, crispy & naturally sweet.",
+        "stock": 80
+    },
+    {
+        "title": "Coconuts",
+        "category": "Fruits",
+        "price": 50,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPwaITxxnnksBGzs7bVXx54f5DFKWGsZJMflRaianxpmncBI7YJzotwTuBMMCDEaoimkY&usqp=CAU",
+        "description": "Sweet tender coconuts full of refreshing water.",
+        "stock": 120
+    },
+    {
+        "title": "Green Capsicum",
+        "category": "Vegetables",
+        "price": 50,
+        "image": "https://5.imimg.com/data5/SELLER/Default/2024/5/415703280/EK/TS/LQ/212628420/green-capsicum-500x500.webp",
+        "description": "Crisp, fresh and perfect for curries & salads.",
+        "stock": 100
+    },
+    {
+        "title": "Nimbu",
+        "category": "Fruits",
+        "price": 50,
+        "image": "https://akm-img-a-in.tosshub.com/aajtak/images/story/202303/nimbu7788778-sixteen_nine.jpg?size=948:533",
+        "description": "Fresh lemons perfect for juice, flavor & pickles.",
+        "stock": 140
+    }
+]

@@ -11,9 +11,9 @@
       theme: {
         extend: {
           colors: {
-            'kisan-green': '#22C55E', // A vibrant green
-            'kisan-dark': '#047857', // A darker, rich green for contrast
-            'kisan-light': '#D1FAE5', // A very light green/mint for backgrounds
+            'kisan-green': '#22C55E',
+            'kisan-dark': '#047857',
+            'kisan-light': '#D1FAE5',
           },
           boxShadow: {
             'custom-3d': '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
@@ -31,7 +31,7 @@
 <header class="bg-white shadow-md sticky top-0 z-30 py-3">
   <div class="flex justify-between items-center px-10 md:px-4 py-1 max-w-8xl mx-auto">
     <div class="flex items-center space-x-5 cursor-pointer">
-      <img src="logo.png" alt="Kisan Vaahan Logo"
+      <img src="{{ url_for('static', path='logo.png') }}" alt="Kisan Vaahan Logo"
            class="h-24 w-24 object-contain transform hover:rotate-6 transition duration-300" />
       <h1 class="text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition duration-300">
         KISAN VAAHAN
@@ -46,65 +46,68 @@
     <h2 class="text-3xl font-extrabold text-center text-kisan-dark">Create Buyer Account</h2>
     <p class="text-center text-gray-600 mt-2">Buy farm-fresh produce directly from verified farmers</p>
 
-    <form class="mt-10 space-y-6" id="buyerRegisterForm">
+    <form class="mt-10 space-y-6" id="buyerRegisterForm" autocomplete="on">
       <div>
         <label class="block text-sm font-semibold text-gray-700">Full Name</label>
-        <input type="text"
+        <input name="full_name" id="full_name" type="text"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="Your full name" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Email Address</label>
-        <input type="email"
+        <input name="email" id="email" type="email"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="you@example.com" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Phone Number</label>
-        <input type="tel"
+        <input name="phone" id="phone" type="tel"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="+91 98765 43210" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Delivery Address</label>
-        <input type="text"
+        <input name="address" id="address" type="text"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="City, State, Pincode" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Password</label>
-        <input type="password"
+        <input name="password" id="password" type="password"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="Create password" required>
       </div>
 
       <div>
         <label class="block text-sm font-semibold text-gray-700">Confirm Password</label>
-        <input type="password"
+        <input name="confirm_password" id="confirm_password" type="password"
                class="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-kisan-green focus:outline-none"
                placeholder="Re-enter password" required>
       </div>
 
-     <a href="{{ url_for('buyer_login') }}"
-   class="w-full block text-center bg-kisan-green text-white py-3 rounded-lg text-lg font-bold hover:bg-kisan-dark transition duration-300 shadow-md hover:scale-[1.02]">
-   Create Account
-</a>
+      <!-- inline error message -->
+      <p id="regError" class="text-sm text-red-600 hidden"></p>
+
+      <button type="submit"
+        class="w-full block text-center bg-kisan-green text-white py-3 rounded-lg text-lg font-bold shadow-md hover:bg-kisan-dark transition transform hover:scale-[1.02]">
+        Create Account
+      </button>
     </form>
-    </p>
   </div>
 </section>
+
 <!-- FOOTER -->
- <footer class="bg-kisan-dark text-white mt-16">
+<footer class="bg-kisan-dark text-white mt-16">
   <div class="max-w-7xl mx-auto px-6 md:px-10 py-12 text-center">
     <h4 class="font-bold text-xl mb-4">Kisan Vaahan</h4>
     <div class="space-x-6 text-sm mb-6">
-      <a href="{{ url_for('landing_page') }}"; class="hover:text-kisan-green transition duration-300">Home</a>
-      <a href="{{ url_for('about') }}"; class="hover:text-kisan-green transition duration-300">About Us</a>
-      <a href="{{ url_for('contact') }}"; class="hover:text-kisan-green transition duration-300">Contact Us</a>
+      <a href="{{ url_for('landing_page') }}" class="hover:text-kisan-green transition duration-300">Home</a>
+      <a href="{{ url_for('about') }}" class="hover:text-kisan-green transition duration-300">About Us</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-kisan-green transition duration-300">Contact Us</a>
     </div>
 
     <p class="mt-4 text-lg">KisanVaahan Corporate Office, Bengaluru, Karnataka</p>
@@ -113,46 +116,75 @@
     <div class="border-t border-white/20 mt-8 pt-4">
       <p class="text-lg text-gray-300">© 2025, KisanVaahan. All rights reserved.</p>
       <div class="space-x-4 text-lg mt-1">
-        <a href="{{ url_for('privacy_policy') }}"; class="hover:text-kisan-green transition duration-300">Privacy Policy</a>
-        <a href="{{ url_for('terms_and_conditions') }}"; class="hover:text-kisan-green transition duration-300">Terms of Service</a>
+        <a href="{{ url_for('privacy_policy') }}" class="hover:text-kisan-green transition duration-300">Privacy Policy</a>
+        <a href="{{ url_for('terms_and_conditions') }}" class="hover:text-kisan-green transition duration-300">Terms of Service</a>
       </div>
     </div>
   </div>
 </footer>
+
 <script>
 document.getElementById("buyerRegisterForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const form = e.target;
+    const errEl = document.getElementById("regError");
+    errEl.classList.add("hidden");
+    errEl.textContent = "";
+
+    const full_name = form.elements["full_name"].value.trim();
+    const email = form.elements["email"].value.trim();
+    const phone = form.elements["phone"].value.trim();
+    const address = form.elements["address"].value.trim();
+    const password = form.elements["password"].value;
+    const confirm_password = form.elements["confirm_password"].value;
+
+    if (!full_name || !email || !phone || !address || !password || !confirm_password) {
+      errEl.textContent = "Please fill all fields.";
+      errEl.classList.remove("hidden");
+      return;
+    }
+
+    if (password !== confirm_password) {
+      errEl.textContent = "Passwords do not match.";
+      errEl.classList.remove("hidden");
+      return;
+    }
 
     const payload = {
-        full_name: form.full_name.value,
-        email: form.email.value,
-        username: form.email.value,   // username=email for buyer
-        phone: form.phone.value,
-        address: form.address.value,
-        password: form.password.value,
+        full_name,
+        email,
+        username: email,   // username=email for buyer
+        phone,
+        address,
+        password,
         user_type: "buyer"
     };
 
     try {
-        const res = await fetch("/auth/signup/buyer", {
+        const res = await fetch("/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
 
         if (!res.ok) {
-            const err = await res.json();
-            alert(err.detail || "Registration failed");
+            // try to extract error message from server response
+            const errBody = await res.json().catch(() => null);
+            const message = errBody?.detail || errBody?.message || "Registration failed";
+            errEl.textContent = message;
+            errEl.classList.remove("hidden");
             return;
         }
 
+        // success
         alert("Account created successfully!");
         window.location.href = "{{ url_for('buyer_login') }}";
 
     } catch (err) {
-        alert("Something went wrong. Try again!");
+        console.error(err);
+        errEl.textContent = "Something went wrong. Try again!";
+        errEl.classList.remove("hidden");
     }
 });
 </script>

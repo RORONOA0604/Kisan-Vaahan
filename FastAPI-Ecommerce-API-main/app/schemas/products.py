@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, Field
 from datetime import datetime
 from typing import List, Optional, ClassVar
 from app.schemas.categories import CategoryBase
@@ -36,7 +36,33 @@ class ProductBase(BaseModel):
         pass
 
 
-# Create Product
+# Simplified Create Schema for Bulk Operations
+class ProductCreateSimple(BaseModel):
+    """Simplified product creation schema for bulk seeding"""
+    title: str
+    description: str
+    price: float
+    category: str  # Category name (will be looked up or created)
+    image: str  # Single image URL
+    stock: int = 100
+    
+    # Optional fields with defaults
+    discount_percentage: float = 0.0
+    rating: float = 4.5
+    brand: str = "Local Farm"
+    is_published: bool = True
+
+    @validator("discount_percentage")
+    def validate_discount(cls, v):
+        if v < 0 or v > 100:
+            raise ValueError("discount_percentage must be between 0 and 100")
+        return v
+
+    class Config(BaseConfig):
+        pass
+
+
+# Full Create Product Schema
 class ProductCreate(ProductBase):
     id: ClassVar[int]
     category: ClassVar[CategoryBase]
@@ -61,6 +87,16 @@ class ProductOut(BaseModel):
 
 class ProductsOut(BaseModel):
     message: str
+    data: List[ProductBase]
+
+    class Config(BaseConfig):
+        pass
+
+
+# Bulk Create Response
+class ProductBulkCreateResponse(BaseModel):
+    message: str
+    created: int
     data: List[ProductBase]
 
     class Config(BaseConfig):
