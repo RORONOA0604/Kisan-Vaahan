@@ -28,6 +28,7 @@ alembic/versions/
 *~
 .*.sw?
 .cache
-
+.env
+.env.example
 # macOS
 .DS_Store
