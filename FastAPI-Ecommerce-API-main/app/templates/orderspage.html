@@ -126,8 +126,10 @@
         });
 
         if (!res.ok) {
-          console.error("Failed to fetch orders", res.status);
-          ordersContainer.innerHTML = `<p class="text-center text-red-500 text-lg py-10">Failed to load orders. Please try again.</p>`;
+          const errData = await res.json().catch(() => ({ detail: "Unknown error" }));
+          console.error("Failed to fetch orders", res.status, errData);
+          const errorMsg = errData.detail || "Failed to load orders";
+          ordersContainer.innerHTML = `<p class="text-center text-red-500 text-lg py-10">Error: ${errorMsg}</p>`;
           return;
         }
 
