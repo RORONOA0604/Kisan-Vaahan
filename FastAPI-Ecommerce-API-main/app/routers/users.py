@@ -50,8 +50,7 @@ def get_all_users(
 @router.get(
     "/{user_id}",
     status_code=status.HTTP_200_OK,
-    response_model=UserOut,
-    dependencies=[Depends(check_admin_role)])
+    response_model=UserOut)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     return UserService.get_user(db, user_id)
 
