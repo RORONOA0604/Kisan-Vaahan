@@ -187,25 +187,36 @@
     async function fetchProducts() {
       const token = getToken();
       try {
+        console.log("Fetching products with token:", token.substring(0, 20) + "...");
         // Fetch ALL products (both approved and pending) - admin should see all
         const res = await fetch(`${API_BASE}/products/`, {
           headers: { "Authorization": "Bearer " + token }
         });
 
+        console.log("Products API response status:", res.status);
+
         if (!res.ok) {
-          console.error("Failed to fetch products", res.status);
+          const errData = await res.json().catch(() => ({ detail: "Unknown error" }));
+          console.error("Failed to fetch products", res.status, errData);
+          table.innerHTML = `<tr><td colspan="6" class="text-center p-5 text-red-500">Error: ${errData.detail || 'Failed to load products'}</td></tr>`;
           products = [];
-        } else {
-          const json = await res.json();
-          products = json.data || [];
-          localStorage.setItem("marketProducts", JSON.stringify(products));
+          return;
         }
+
+        const json = await res.json();
+        console.log("Products data received:", json);
+        products = json.data || [];
+        console.log("Products count:", products.length);
+        localStorage.setItem("marketProducts", JSON.stringify(products));
         loadProducts();
       } catch (err) {
         console.error("fetchProducts error:", err);
+        table.innerHTML = `<tr><td colspan="6" class="text-center p-5 text-red-500">Error: ${err.message}</td></tr>`;
         // Fallback to localStorage
         products = JSON.parse(localStorage.getItem("marketProducts")) || [];
-        loadProducts();
+        if (products.length > 0) {
+          loadProducts();
+        }
       }
     }
 
