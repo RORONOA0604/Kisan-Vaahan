@@ -22,7 +22,15 @@ class OrderService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Cart is empty. Cannot create order."
             )
-        
+
+        # CHECK: Minimum order amount (₹500)
+        MIN_ORDER_AMOUNT = 500
+        if cart.total_amount < MIN_ORDER_AMOUNT:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Minimum order amount is ₹{MIN_ORDER_AMOUNT}. Current total: ₹{cart.total_amount}"
+            )
+
         # Create order
         order = Order(
             user_id=user_id,

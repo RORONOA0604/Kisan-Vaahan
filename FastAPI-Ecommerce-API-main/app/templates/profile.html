@@ -30,7 +30,7 @@
 <header class="bg-white shadow-md sticky top-3 z-30" style="zoom: 70%; overflow-x: hidden;">
   <div class="flex justify-between items-center px-6 md:px-10 py-3 max-w-8xl mx-auto">
     <div class="flex items-center space-x-4 cursor-pointer">
-      <img src="logo.jpg" alt="Kisan Vaahan Logo" class="h-20 w-20 object-contain transform hover:rotate-12 transition-transform duration-400" />
+      <img src="/static/logo.png" alt="Kisan Vaahan Logo" class="h-20 w-20 object-contain transform hover:rotate-12 transition-transform duration-400" />
       <h1 class="text-3xl md:text-4xl font-extrabold text-kisan-dark tracking-tight leading-none transform hover:scale-105 transition-transform duration-300">
         KISAN VAAHAN
       </h1>
@@ -164,22 +164,23 @@
     window.location.href = "{{ url_for('landing_page') }}";;
   }
 
-  // Default profile data
+  // Default profile data (empty, will be populated from localStorage or API)
   const defaultProfile = {
-    name: "Krishi Buyer Co.",
-    contactPerson: "Sanjay Verma",
-    phone: "+91 98765 43210",
-    email: "sanjay.verma@krishibuyer.in",
-    currentAddress: "B-105, APMC Market, Turbhe",
-    deliveryAddress: "B-105, APMC Market, Turbhe",
-    city: "Navi Mumbai",
-    pincode: "400705",
-    state: "Maharashtra",
+    name: "User",
+    contactPerson: "User",
+    phone: "",
+    email: "",
+    currentAddress: "",
+    deliveryAddress: "",
+    city: "",
+    pincode: "",
+    state: "",
     image: ""
   };
 
   function loadProfile() {
     const raw = localStorage.getItem('buyerProfile');
+    const userToken = localStorage.getItem('access_token');
     const profile = raw ? JSON.parse(raw) : defaultProfile;
     const imgEl = document.getElementById('buyerImage');
 
@@ -195,13 +196,13 @@
       imgEl.src = 'data:image/svg+xml;base64,' + btoa(svg);
     }
 
-    document.getElementById('displayName').innerText = profile.contactPerson || profile.name;
-    document.getElementById('greeting').innerText = `Welcome, ${profile.contactPerson || profile.name}`;
-    document.getElementById('displayPhone').innerText = profile.phone || '';
-    document.getElementById('displayEmail').innerText = profile.email || '';
-    document.getElementById('displayCurrAddr').innerText = profile.currentAddress || '';
-    document.getElementById('displayDelAddr').innerText = profile.deliveryAddress || '';
-    document.getElementById('displayCityState').innerText = `${profile.city || ''} • ${profile.pincode || ''} • ${profile.state || ''}`;
+    document.getElementById('displayName').innerText = profile.contactPerson || profile.name || "User";
+    document.getElementById('greeting').innerText = `Welcome, ${profile.contactPerson || profile.name || "User"}`;
+    document.getElementById('displayPhone').innerText = profile.phone || 'Not provided';
+    document.getElementById('displayEmail').innerText = profile.email || 'Not provided';
+    document.getElementById('displayCurrAddr').innerText = profile.currentAddress || 'Not provided';
+    document.getElementById('displayDelAddr').innerText = profile.deliveryAddress || 'Not provided';
+    document.getElementById('displayCityState').innerText = `${profile.city || 'City'} • ${profile.pincode || 'Pincode'} • ${profile.state || 'State'}`;
   }
 
   if (!localStorage.getItem('buyerProfile')) {
