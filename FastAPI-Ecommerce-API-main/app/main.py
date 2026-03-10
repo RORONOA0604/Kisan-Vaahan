@@ -59,6 +59,7 @@ app.add_middleware(
         "http://127.0.0.1:5500",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
+        "https://kisan-vaahan.onrender.com/"
         "*"  # Allow all origins for development
     ],
     allow_credentials=True,
