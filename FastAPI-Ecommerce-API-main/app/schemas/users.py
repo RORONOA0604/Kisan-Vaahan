@@ -11,13 +11,16 @@ class BaseConfig:
 class UserBase(BaseModel):
     id: int
     username: str
-    email: EmailStr
+    email: EmailStr | None = None
     full_name: str
     password: str
-    role: str
+    user_type: str
+    phone: str | None = None
+    address: str | None = None
+    location: str | None = None
     is_active: bool
     created_at: datetime
-    carts: List[CartBase]
+    carts: List[CartBase] = []
 
     class Config(BaseConfig):
         pass
