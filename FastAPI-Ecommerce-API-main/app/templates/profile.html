@@ -152,6 +152,8 @@
 </div>
 
 <script>
+  const API_BASE = "http://localhost:8000/api";
+
   // Logout Modal Functions
   function confirmLogout() {
     document.getElementById("logoutModal").classList.remove("hidden");
@@ -161,33 +163,68 @@
   }
   function proceedLogout() {
     document.getElementById("logoutModal").classList.add("hidden");
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('buyerProfile');
     window.location.href = "{{ url_for('landing_page') }}";;
   }
 
-  // Default profile data (empty, will be populated from localStorage or API)
+  // Default profile data (empty, will be populated from API)
   const defaultProfile = {
-    name: "User",
-    contactPerson: "User",
-    phone: "",
+    id: 0,
+    username: "User",
+    full_name: "User",
     email: "",
-    currentAddress: "",
-    deliveryAddress: "",
-    city: "",
-    pincode: "",
-    state: "",
-    image: ""
+    phone: "",
+    address: "",
+    location: "",
+    user_type: "buyer"
   };
 
-  function loadProfile() {
-    const raw = localStorage.getItem('buyerProfile');
-    const userToken = localStorage.getItem('access_token');
-    const profile = raw ? JSON.parse(raw) : defaultProfile;
+  async function loadProfile() {
+    const token = localStorage.getItem('access_token');
     const imgEl = document.getElementById('buyerImage');
+
+    if (!token) {
+      window.location.href = "{{ url_for('buyer_login') }}";
+      return;
+    }
+
+    try {
+      // Fetch user data from API
+      const res = await fetch(`${API_BASE}/users/me`, {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to load user profile");
+      }
+
+      const json = await res.json();
+      const profile = json.data || defaultProfile;
+
+      // Store in localStorage for offline access
+      localStorage.setItem('buyerProfile', JSON.stringify(profile));
+
+      displayProfile(profile);
+    } catch (err) {
+      console.error("loadProfile error:", err);
+      // Fallback to localStorage if API fails
+      const raw = localStorage.getItem('buyerProfile');
+      const profile = raw ? JSON.parse(raw) : defaultProfile;
+      displayProfile(profile);
+    }
+  }
+
+  function displayProfile(profile) {
+    const imgEl = document.getElementById('buyerImage');
+    const userName = profile.full_name || profile.username || "User";
 
     if (profile.image) {
       imgEl.src = profile.image;
     } else {
-      const initials = (profile.contactPerson || profile.name || "User")
+      const initials = userName
         .split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'>
         <rect width='100%' height='100%' fill='#D1FAE5'/>
@@ -196,19 +233,17 @@
       imgEl.src = 'data:image/svg+xml;base64,' + btoa(svg);
     }
 
-    document.getElementById('displayName').innerText = profile.contactPerson || profile.name || "User";
-    document.getElementById('greeting').innerText = `Welcome, ${profile.contactPerson || profile.name || "User"}`;
+    document.getElementById('displayName').innerText = userName;
+    document.getElementById('greeting').innerText = `Welcome, ${userName}`;
     document.getElementById('displayPhone').innerText = profile.phone || 'Not provided';
     document.getElementById('displayEmail').innerText = profile.email || 'Not provided';
-    document.getElementById('displayCurrAddr').innerText = profile.currentAddress || 'Not provided';
-    document.getElementById('displayDelAddr').innerText = profile.deliveryAddress || 'Not provided';
+    document.getElementById('displayCurrAddr').innerText = profile.address || 'Not provided';
+    document.getElementById('displayDelAddr').innerText = profile.location || 'Not provided';
     document.getElementById('displayCityState').innerText = `${profile.city || 'City'} • ${profile.pincode || 'Pincode'} • ${profile.state || 'State'}`;
   }
 
-  if (!localStorage.getItem('buyerProfile')) {
-    localStorage.setItem('buyerProfile', JSON.stringify(defaultProfile));
-  }
-  loadProfile();
+  // Load profile on page load
+  document.addEventListener('DOMContentLoaded', loadProfile);
 </script>
 </body>
 </html>

@@ -172,33 +172,56 @@
   </footer>
 
 <script>
+  const API_BASE = "http://localhost:8000/api";
   const key = 'buyerProfile';
   const defaultProfile = {
-    name: "User",
-    contactPerson: "User",
-    phone: "",
+    id: 0,
+    username: "User",
+    full_name: "User",
     email: "",
-    currentAddress: "",
-    deliveryAddress: "",
-    city: "",
-    pincode: "",
-    state: "",
-    image: ""
+    phone: "",
+    address: "",
+    location: "",
+    user_type: "buyer"
   };
 
-  function readProfile() {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : defaultProfile;
+  // Get access token or redirect to login
+  function getToken() {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      window.location.href = "{{ url_for('buyer_login') }}";
+    }
+    return token;
   }
 
-  function populateForm() {
-    const p = readProfile();
-    document.getElementById('contactPerson').value = p.contactPerson || p.name || '';
-    document.getElementById('companyName').value = p.name || '';
+  async function readProfile() {
+    const token = getToken();
+    try {
+      const res = await fetch(`${API_BASE}/users/me`, {
+        headers: { "Authorization": "Bearer " + token }
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch profile");
+
+      const json = await res.json();
+      const profile = json.data || defaultProfile;
+      localStorage.setItem(key, JSON.stringify(profile));
+      return profile;
+    } catch (err) {
+      console.error("readProfile error:", err);
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : defaultProfile;
+    }
+  }
+
+  async function populateForm() {
+    const p = await readProfile();
+    document.getElementById('contactPerson').value = p.full_name || '';
+    document.getElementById('companyName').value = p.username || '';
     document.getElementById('phone').value = p.phone || '';
     document.getElementById('email').value = p.email || '';
-    document.getElementById('currentAddress').value = p.currentAddress || '';
-    document.getElementById('deliveryAddress').value = p.deliveryAddress || '';
+    document.getElementById('currentAddress').value = p.address || '';
+    document.getElementById('deliveryAddress').value = p.location || '';
     document.getElementById('city').value = p.city || '';
     document.getElementById('pincode').value = p.pincode || '';
     document.getElementById('state').value = p.state || '';
@@ -206,14 +229,13 @@
     const img = document.getElementById('previewImg');
     if (p.image) img.src = p.image;
     else {
-      // fallback SVG initials
-      const initials = (p.contactPerson || p.name || "User").split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+      const initials = (p.full_name || p.username || "User").split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><rect width='100%' height='100%' fill='#D1FAE5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='96' fill='#047857'>${initials}</text></svg>`;
       img.src = 'data:image/svg+xml;base64,' + btoa(svg);
     }
   }
 
-  // handle image upload -> store base64 to local variable (not saved until submit)
+  // handle image upload
   let newImageBase64 = null;
   document.getElementById('imageInput').addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -226,38 +248,55 @@
     reader.readAsDataURL(file);
   });
 
-  // initialize
-  if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(defaultProfile));
-  populateForm();
+  // initialize form on page load
+  document.addEventListener('DOMContentLoaded', populateForm);
 
- // Save handler
-document.getElementById('profileForm').addEventListener('submit', function(e){
+  // Save handler - call API to update profile
+  document.getElementById('profileForm').addEventListener('submit', async function(e){
     e.preventDefault();
+    const token = getToken();
 
     const updated = {
-      name: document.getElementById('companyName').value.trim(),
-      contactPerson: document.getElementById('contactPerson').value.trim(),
+      full_name: document.getElementById('contactPerson').value.trim(),
       phone: document.getElementById('phone').value.trim(),
       email: document.getElementById('email').value.trim(),
-      currentAddress: document.getElementById('currentAddress').value.trim(),
-      deliveryAddress: document.getElementById('deliveryAddress').value.trim(),
+      address: document.getElementById('currentAddress').value.trim(),
+      location: document.getElementById('deliveryAddress').value.trim(),
       city: document.getElementById('city').value.trim(),
       pincode: document.getElementById('pincode').value.trim(),
       state: document.getElementById('state').value.trim(),
-      image: newImageBase64 !== null ? newImageBase64 : readProfile().image || ''
     };
 
     // basic validation
-    if (!updated.contactPerson || !updated.phone || !updated.email) {
+    if (!updated.full_name || !updated.phone || !updated.email) {
       alert('Please fill at least name, phone and email.');
       return;
     }
 
-    localStorage.setItem(key, JSON.stringify(updated));
+    try {
+      const res = await fetch(`${API_BASE}/users/me`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(updated)
+      });
 
-    // redirect back to PROFILE PAGE
-    window.location.href = "{{ url_for('buyer_profile') }}";;
-});
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: "Update failed" }));
+        throw new Error(err.detail || "Failed to update profile");
+      }
+
+      const json = await res.json();
+      localStorage.setItem(key, JSON.stringify(json.data));
+      alert("Profile updated successfully!");
+      window.location.href = "{{ url_for('buyer_profile') }}";
+    } catch (err) {
+      console.error("Save error:", err);
+      alert(err.message || "Failed to update profile");
+    }
+  });
 
 </script>
 </body>
