@@ -36,3 +36,4 @@ watchfiles
 websockets
 httpx
 supabase
+jinja2
