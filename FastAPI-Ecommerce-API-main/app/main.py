@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import products, categories, carts, users, auth, accounts, orders, market_prices
 
@@ -30,8 +31,6 @@ For any inquiries, please contact:
 
 * Github: https://github.com/aliseyedi01
 """
-templates = Jinja2Templates(directory="app/templates")
-
 
 app = FastAPI(
     description=description,
@@ -50,6 +49,15 @@ app = FastAPI(
     },
 )
 
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5500", "http://localhost:3000", "http://localhost:8000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Mount static files (images etc.). Place your logo at: app/static/logo.png
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
@@ -62,122 +70,151 @@ async def landing_page(request: Request):
     return templates.TemplateResponse("landingpage.html", {"request": request})
 
 
-
 @app.get("/privacy", response_class=HTMLResponse, name="privacy_policy")
 async def privacy_policy(request: Request):
     return templates.TemplateResponse("privacyandpolicypage.html", {"request": request})
+
 
 @app.get("/terms", response_class=HTMLResponse, name="terms_and_conditions")
 async def terms_and_conditions(request: Request):
     return templates.TemplateResponse("termsandconditionspage.html", {"request": request})
 
+
 @app.get("/about", response_class=HTMLResponse, name="about")
 async def about(request: Request):
     return templates.TemplateResponse("aboutpage.html", {"request": request})
+
 
 @app.get("/contact", response_class=HTMLResponse, name="contact")
 async def contact(request: Request):
     return templates.TemplateResponse("contactpage.html", {"request": request})
 
+
 @app.get("/farmer/login", response_class=HTMLResponse, name="farmer_login")
 async def farmer_login(request: Request):
     return templates.TemplateResponse("farmerlogin.html", {"request": request})
+
 
 @app.get("/farmer/register", response_class=HTMLResponse, name="farmer_register")
 async def farmer_register(request: Request):
     return templates.TemplateResponse("farmerregister.html", {"request": request})
 
+
 @app.get("/farmer/register/success", response_class=HTMLResponse, name="farmer_register_success")
 async def farmer_register_success(request: Request):
     return templates.TemplateResponse("faregistsuccesspage.html", {"request": request})
+
 
 @app.get("/farmer/dashboard", response_class=HTMLResponse, name="farmer_dashboard")
 async def farmer_dashboard(request: Request):
     return templates.TemplateResponse("farmerdashboard.html", {"request": request})
 
+
 @app.get("/farmer/add-product", response_class=HTMLResponse, name="farmer_add_product")
 async def farmer_add_product(request: Request):
     return templates.TemplateResponse("addnewpage.html", {"request": request})
+
+
 @app.get("/farmer/edit-product", response_class=HTMLResponse, name="farmer_edit_product")
 async def farmer_edit_product(request: Request):
     return templates.TemplateResponse("editproduct.html", {"request": request})
 
+
 @app.get("/cart", response_class=HTMLResponse, name="cart")
-async def farmer_edit_product(request: Request):
+async def view_cart(request: Request):
     return templates.TemplateResponse("cart.html", {"request": request})
 
+
 @app.get("/cart/order-success", response_class=HTMLResponse, name="order_success")
-async def farmer_edit_product(request: Request):
+async def order_success(request: Request):
     return templates.TemplateResponse("ordersuccess.html", {"request": request})
 
 
 @app.get("/buyer/login", response_class=HTMLResponse, name="buyer_login")
-async def farmer_edit_product(request: Request):
+async def buyer_login(request: Request):
     return templates.TemplateResponse("buyerlogin.html", {"request": request})
 
-@app.get("/buyer/Register", response_class=HTMLResponse, name="buyer_register")
-async def farmer_edit_product(request: Request):
-    return templates.TemplateResponse("Registerpage.html", {"request": request})
+
+@app.get("/buyer/register", response_class=HTMLResponse, name="buyer_register")
+async def buyer_register(request: Request):
+    return templates.TemplateResponse("registerpage.html", {"request": request})
+
 
 @app.get("/buyer/market", response_class=HTMLResponse, name="buyer_market")
-async def farmer_edit_product(request: Request):
+async def buyer_market(request: Request):
     return templates.TemplateResponse("market.html", {"request": request})
 
+
 @app.get("/buyer/market/cart", response_class=HTMLResponse, name="buyer_cart")
-async def farmer_edit_product(request: Request):
+async def buyer_cart(request: Request):
     return templates.TemplateResponse("cart.html", {"request": request})
 
+
 @app.get("/buyer/profile", response_class=HTMLResponse, name="buyer_profile")
-async def farmer_edit_product(request: Request):
+async def buyer_profile(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
 
+
 @app.get("/buyer/profile/edit", response_class=HTMLResponse, name="buyer_edit_profile")
-async def farmer_edit_product(request: Request):
+async def buyer_edit_profile(request: Request):
     return templates.TemplateResponse("editprofile.html", {"request": request})
 
-@app.get("/buyer/Myorder", response_class=HTMLResponse, name="buyer_orders")
-async def farmer_edit_product(request: Request):
-    return templates.TemplateResponse("Myorder.html", {"request": request})
-# Admin Routes ----------------------------------------------------
-@app.get("/Admin/Login",response_class=HTMLResponse, name="admin_login")
+
+@app.get("/buyer/myorder", response_class=HTMLResponse, name="buyer_orders")
+async def buyer_orders(request: Request):
+    return templates.TemplateResponse("myorder.html", {"request": request})
+
+# Admin Routes
+@app.get("/admin/login", response_class=HTMLResponse, name="admin_login")
 async def admin_login(request: Request):
     return templates.TemplateResponse("adminloginpage.html", {"request": request})
 
-@app.get("/Admin/Dashboard",response_class=HTMLResponse, name="admin_dashboard")
+
+@app.get("/admin/dashboard", response_class=HTMLResponse, name="admin_dashboard")
 async def admin_dashboard(request: Request):
     return templates.TemplateResponse("admindashboardpage.html", {"request": request})
 
-@app.get("/Admin/products",response_class=HTMLResponse, name="admin_products")
+
+@app.get("/admin/products", response_class=HTMLResponse, name="admin_products")
 async def admin_products(request: Request):
     return templates.TemplateResponse("productspage.html", {"request": request})
 
-@app.get("/Admin/Add-product",response_class=HTMLResponse, name="admin_add_product")
+
+@app.get("/admin/add-product", response_class=HTMLResponse, name="admin_add_product")
 async def admin_add_product(request: Request):
     return templates.TemplateResponse("addproductpage.html", {"request": request})
 
-@app.get("/Admin/Edit-product",response_class=HTMLResponse, name="admin_edit_product")
+
+@app.get("/admin/edit-product", response_class=HTMLResponse, name="admin_edit_product")
 async def admin_edit_product(request: Request):
     return templates.TemplateResponse("editproductpage.html", {"request": request})
 
-@app.get("/Admin/farmer-uploads",response_class=HTMLResponse, name="admin_farm_uploads")
+
+@app.get("/admin/farmer-uploads", response_class=HTMLResponse, name="admin_farm_uploads")
 async def admin_farmer_uploads(request: Request):
     return templates.TemplateResponse("farmeruploadspage.html", {"request": request})
 
-@app.get("/Admin/Orders-page",response_class=HTMLResponse, name="admin_orders")
-async def admin_oders_page(request: Request):
+
+@app.get("/admin/orders", response_class=HTMLResponse, name="admin_orders")
+async def admin_orders_page(request: Request):
     return templates.TemplateResponse("orderspage.html", {"request": request})
 
-@app.get("/Admin/Payments",response_class=HTMLResponse, name="admin_payments")
+
+@app.get("/admin/payments", response_class=HTMLResponse, name="admin_payments")
 async def admin_payments(request: Request):
     return templates.TemplateResponse("paymentpage.html", {"request": request})
 
-@app.get("/Admin/View-Order",response_class=HTMLResponse, name="admin_view_order")
+
+@app.get("/admin/view-order", response_class=HTMLResponse, name="admin_view_order")
 async def admin_view_order(request: Request):
     return templates.TemplateResponse("vieworder.html", {"request": request})
 
-@app.get("/Admin/view-products",response_class=HTMLResponse, name="admin_view_products")
+
+@app.get("/admin/view-products", response_class=HTMLResponse, name="admin_view_products")
 async def admin_view_products(request: Request):
     return templates.TemplateResponse("viewproductpage.html", {"request": request})
+
+
 # Include your routers (after mounting static & templates)
 app.include_router(products.router)
 app.include_router(categories.router)

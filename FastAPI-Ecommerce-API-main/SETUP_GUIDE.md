@@ -101,7 +101,7 @@ The application will be available at:
 
 ### 5.1 Test Admin Login
 
-1. Navigate to: http://localhost:8000/Admin/Login
+1. Navigate to: http://localhost:8000/admin/login
 2. Login with:
    - **Username**: `admin`
    - **Password**: `admin123`
@@ -117,7 +117,7 @@ The application will be available at:
 ### 5.3 Test Product Approval
 
 1. Login as admin
-2. Go to: http://localhost:8000/Admin/farmer-uploads
+2. Go to: http://localhost:8000/admin/farmer-uploads
 3. You should see pending products from farmers
 4. Approve or reject products
 
