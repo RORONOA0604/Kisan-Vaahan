@@ -90,17 +90,43 @@
 </footer>
 
 <script>
-document.getElementById("adminLoginForm").addEventListener("submit", function(event) {
+document.getElementById("adminLoginForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const id = document.getElementById("adminID").value.trim();
   const password = document.getElementById("adminPassword").value.trim();
+  const errorEl = document.getElementById("loginError");
 
-  if(id === "kissan@2025" && password === "#kissan@2025#") {
+  try {
+    const fd = new FormData();
+    fd.append("username", id);
+    fd.append("password", password);
+
+    const res = await fetch("/auth/login", {
+      method: "POST",
+      body: fd
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => null);
+      errorEl.textContent = "❌ " + (err?.detail || "Incorrect ID or Password");
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const data = await res.json();
+
+    // Store token for API authentication
+    localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("loggedAdmin", id);
+
+    // Redirect to admin dashboard
     window.location.href = "{{ url_for('admin_dashboard') }}";
-  } else {
-    document.getElementById("loginError").classList.remove("hidden");
+
+  } catch (err) {
+    console.error("Login error:", err);
+    errorEl.textContent = "❌ Connection error. Try again!";
+    errorEl.classList.remove("hidden");
   }
 });
 </script>
