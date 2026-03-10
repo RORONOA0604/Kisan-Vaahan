@@ -99,8 +99,7 @@ def reject_product(
 @router.put(
     "/{product_id}",
     status_code=status.HTTP_200_OK,
-    response_model=ProductOut,
-    dependencies=[Depends(check_admin_role)])
+    response_model=ProductOut)
 def update_product(
         product_id: int,
         updated_product: ProductUpdate,
@@ -112,8 +111,7 @@ def update_product(
 @router.delete(
     "/{product_id}",
     status_code=status.HTTP_200_OK,
-    response_model=ProductOutDelete,
-    dependencies=[Depends(check_admin_role)])
+    response_model=ProductOutDelete)
 def delete_product(
         product_id: int,
         db: Session = Depends(get_db)):

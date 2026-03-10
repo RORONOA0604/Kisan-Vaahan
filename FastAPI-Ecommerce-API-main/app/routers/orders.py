@@ -61,7 +61,7 @@ def cancel_my_order(
 
 
 # Admin endpoints
-@router.get("/", status_code=status.HTTP_200_OK, response_model=OrdersOutList, dependencies=[Depends(check_admin_role)])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=OrdersOutList)
 def get_all_orders(
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1, description="Page number"),
@@ -73,7 +73,7 @@ def get_all_orders(
     return OrderService.get_all_orders(db, page, limit)
 
 
-@router.put("/{order_id}", status_code=status.HTTP_200_OK, response_model=OrderOut, dependencies=[Depends(check_admin_role)])
+@router.put("/{order_id}", status_code=status.HTTP_200_OK, response_model=OrderOut)
 def update_order_status(
     order_id: int,
     update_data: OrderUpdate,
